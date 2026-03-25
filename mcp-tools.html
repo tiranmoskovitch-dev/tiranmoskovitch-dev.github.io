@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiran Moskovitch — Developer Tools & MCP Servers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #131922;
+            --bg-card: #161d27;
+            --bg-card-hover: #1c2533;
+            --border: #253040;
+            --border-hover: #3a4a60;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #5a6370;
+            --accent-blue: #58a6ff;
+            --accent-purple: #bc8cff;
+            --accent-green: #3fb950;
+            --accent-amber: #f0b232;
+            --accent-cyan: #56d4dd;
+            --accent-pink: #f778ba;
+            --glow-blue: rgba(88, 166, 255, 0.08);
+            --glow-purple: rgba(188, 140, 255, 0.08);
+            --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent-blue); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--accent-purple); }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        /* ── Nav ─────────────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(10, 14, 20, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .nav-brand .logo {
+            width: 28px; height: 28px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { color: var(--text-secondary); font-size: 0.875rem; font-weight: 500; }
+        .nav-links a:hover { color: var(--text-primary); }
+
+        .nav-cta {
+            background: var(--accent-blue);
+            color: #fff !important;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .nav-cta:hover { background: #79b8ff; transform: translateY(-1px); }
+
+        /* ── Hero ────────────────────────────────────────── */
+        .hero {
+            padding: 140px 2rem 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 800px; height: 400px;
+            background: radial-gradient(ellipse, rgba(88,166,255,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 0.8rem;
+            color: var(--accent-green);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-badge .dot {
+            width: 6px; height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 50%, var(--accent-pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), #4a90e2);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(88,166,255,0.2);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(88,166,255,0.3); color: #fff; }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover { border-color: var(--border-hover); background: var(--bg-card); color: var(--text-primary); }
+
+        /* ── Install bar ─────────────────────────────────── */
+        .install-bar {
+            max-width: 520px;
+            margin: 2rem auto 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 20px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .install-bar code { color: var(--accent-cyan); }
+        .install-bar .prompt { color: var(--accent-green); }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+        .copy-btn.copied { border-color: var(--accent-green); color: var(--accent-green); }
+
+        /* ── Stats strip ─────────────────────────────────── */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 2rem;
+            margin: 0 auto;
+            max-width: 700px;
+        }
+
+        .stat { text-align: center; }
+        .stat-num {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+        /* ── Section headers ─────────────────────────────── */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        /* ── Tool cards ──────────────────────────────────── */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--card-accent, var(--accent-blue)), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tool-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+
+        .tool-card:hover::before { opacity: 1; }
+
+        .tool-icon {
+            width: 48px; height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .tool-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .tool-card .tool-id {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .tool-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .tool-features span {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            background: rgba(88,166,255,0.08);
+            color: var(--accent-blue);
+            padding: 3px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(88,166,255,0.12);
+        }
+
+        .tool-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .tool-price {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .tool-price .period {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .tool-tier {
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tier-free {
+            background: rgba(63,185,80,0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(63,185,80,0.2);
+        }
+
+        .tier-pro {
+            background: rgba(188,140,255,0.1);
+            color: var(--accent-purple);
+            border: 1px solid rgba(188,140,255,0.2);
+        }
+
+        .tool-btn {
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .tool-btn-primary {
+            background: var(--accent-blue);
+            color: #fff;
+        }
+        .tool-btn-primary:hover { background: #79b8ff; color: #fff; }
+
+        /* ── How it works ────────────────────────────────── */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .step-num {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.9rem;
+            margin: 0 auto 1rem;
+            color: #fff;
+        }
+
+        .step h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .step code {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            background: var(--bg-primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: var(--accent-cyan);
+        }
+
+        /* ── Pricing section ─────────────────────────────── */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 40px rgba(188,140,255,0.08);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 1rem 0;
+        }
+
+        .pricing-card .price .currency { font-size: 1.2rem; vertical-align: top; }
+        .pricing-card .price .period { font-size: 0.85rem; font-weight: 400; color: var(--text-muted); }
+
+        .pricing-list {
+            list-style: none;
+            text-align: left;
+            margin: 1.5rem 0;
+        }
+
+        .pricing-list li {
+            padding: 8px 0;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pricing-list li .check { color: var(--accent-green); font-weight: 700; }
+        .pricing-list li .x { color: var(--text-muted); }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            margin-top: 1rem;
+            display: block;
+            text-align: center;
+        }
+
+        .pricing-btn-free {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .pricing-btn-pro {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            color: #fff;
+        }
+        .pricing-btn-pro:hover { transform: translateY(-2px); color: #fff; }
+
+        /* ── Code block ──────────────────────────────────── */
+        .code-demo {
+            max-width: 680px;
+            margin: 2rem auto 0;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .code-titlebar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+        }
+
+        .code-content {
+            padding: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            overflow-x: auto;
+        }
+
+        .code-content .comment { color: var(--text-muted); }
+        .code-content .keyword { color: var(--accent-purple); }
+        .code-content .string { color: var(--accent-green); }
+        .code-content .func { color: var(--accent-blue); }
+        .code-content .dim { color: var(--text-muted); }
+
+        /* ── Footer ──────────────────────────────────────── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* ── Responsive ──────────────────────────────────── */
+        @media (max-width: 768px) {
+            .stats { gap: 1.5rem; }
+            .steps { grid-template-columns: 1fr; }
+            .tools-grid { grid-template-columns: 1fr; }
+            .nav-links .desktop-only { display: none; }
+        }
+
+        /* ── Divider ─────────────────────────────────────── */
+        .divider {
+            max-width: 1100px;
+            margin: 0 auto;
+            border: none;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ── Bundle banner ───────────────────────────────── */
+        .bundle-banner {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, rgba(188,140,255,0.06), rgba(88,166,255,0.06));
+            border: 1px solid rgba(188,140,255,0.2);
+            border-radius: 12px;
+            padding: 28px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .bundle-info h3 { font-size: 1.1rem; font-weight: 700; }
+        .bundle-info p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+        .bundle-price {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+        .bundle-price .old { color: var(--text-muted); text-decoration: line-through; font-size: 1.1rem; }
+        .bundle-price .new {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Coming Soon cards ───────────────────────────── */
+        .tool-card.coming-soon {
+            opacity: 0.7;
+            position: relative;
+        }
+
+        .tool-card.coming-soon:hover { opacity: 0.9; }
+
+        .coming-badge {
+            position: absolute;
+            top: 16px; right: 16px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 3px 10px;
+            border-radius: 4px;
+            background: rgba(240,178,50,0.1);
+            color: var(--accent-amber);
+            border: 1px solid rgba(240,178,50,0.2);
+        }
+
+        /* ── Projects section ────────────────────────────── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+
+        .project-card .project-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .project-card .project-icon {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .project-card .project-header h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .project-card .project-header .project-type {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .project-card p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .project-tags span {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .tag-python { background: rgba(53,114,165,0.12); color: #5b9bd5; border: 1px solid rgba(53,114,165,0.2); }
+        .tag-fastapi { background: rgba(0,150,136,0.1); color: #26a69a; border: 1px solid rgba(0,150,136,0.2); }
+        .tag-react { background: rgba(97,218,251,0.08); color: #61dafb; border: 1px solid rgba(97,218,251,0.15); }
+        .tag-ai { background: rgba(188,140,255,0.1); color: var(--accent-purple); border: 1px solid rgba(188,140,255,0.2); }
+        .tag-security { background: rgba(248,81,73,0.08); color: #f85149; border: 1px solid rgba(248,81,73,0.15); }
+        .tag-trading { background: rgba(63,185,80,0.1); color: var(--accent-green); border: 1px solid rgba(63,185,80,0.2); }
+        .tag-infra { background: rgba(240,178,50,0.1); color: var(--accent-amber); border: 1px solid rgba(240,178,50,0.2); }
+        .tag-cli { background: rgba(86,212,221,0.1); color: var(--accent-cyan); border: 1px solid rgba(86,212,221,0.2); }
+
+        .project-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .status-dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+        }
+
+        .status-live .status-dot { background: var(--accent-green); }
+        .status-live { color: var(--accent-green); }
+        .status-beta .status-dot { background: var(--accent-amber); }
+        .status-beta { color: var(--accent-amber); }
+        .status-dev .status-dot { background: var(--accent-blue); }
+        .status-dev { color: var(--accent-blue); }
+
+        /* ── CTA banner ──────────────────────────────────── */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+    <div class="nav-brand">
+        <div class="logo">M</div>
+        <span>MCP Tools</span>
+    </div>
+    <div class="nav-links">
+        <a href="#tools" class="desktop-only">MCP Tools</a>
+        <a href="#projects" class="desktop-only">Projects</a>
+        <a href="#pricing" class="desktop-only">Pricing</a>
+        <a href="#setup" class="desktop-only">Setup</a>
+        <a href="https://github.com/tiranmoskovitch-dev" class="desktop-only">GitHub</a>
+        <a href="#tools" class="nav-cta">Get Started</a>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-badge">
+        <span class="dot"></span>
+        5 Live + 6 Coming Soon
+    </div>
+    <h1>
+        Developer tools that<br>
+        <span class="gradient">actually work.</span>
+    </h1>
+    <p class="hero-sub">
+        Production-grade MCP servers, security platforms, AI agents, and developer tools.
+        Built by a developer, for developers.
+        Install in 30 seconds. Free tier included.
+    </p>
+    <div class="hero-actions">
+        <a href="#tools" class="btn btn-primary">Browse Tools</a>
+        <a href="#setup" class="btn btn-secondary">Quick Setup</a>
+    </div>
+
+    <div class="install-bar">
+        <span><span class="prompt">$</span> <code>pip install mcp-dns-intel</code></span>
+        <button class="copy-btn" onclick="copyInstall(this)">Copy</button>
+    </div>
+</section>
+
+<!-- Stats -->
+<div class="stats">
+    <div class="stat">
+        <div class="stat-num">11</div>
+        <div class="stat-label">MCP Servers</div>
+    </div>
+    <div class="stat">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Projects</div>
+    </div>
+    <div class="stat">
+        <div class="stat-num">60+</div>
+        <div class="stat-label">Total Tools</div>
+    </div>
+    <div class="stat">
+        <div class="stat-num">Free</div>
+        <div class="stat-label">Basic Tier</div>
+    </div>
+</div>
+
+<hr class="divider">
+
+<!-- Tools -->
+<section class="section" id="tools">
+    <div class="section-header">
+        <h2>The Tools</h2>
+        <p>Each server is standalone, fully tested, and follows the MCP spec. Free tier works forever.</p>
+    </div>
+
+    <div class="tools-grid">
+
+        <!-- DNS Intel -->
+        <div class="tool-card" style="--card-accent: #58a6ff;">
+            <div class="tool-icon" style="background: rgba(88,166,255,0.1); color: #58a6ff;">&#x1F50D;</div>
+            <h3>DNS & Domain Intelligence</h3>
+            <div class="tool-id">mcp-dns-intel</div>
+            <p>
+                WHOIS lookup, DNS record queries (A, MX, TXT, CNAME, SOA, and more),
+                subdomain enumeration, SSL certificate analysis, reverse DNS, and domain age checking.
+            </p>
+            <div class="tool-features">
+                <span>whois_lookup</span>
+                <span>dns_records</span>
+                <span>subdomain_enum</span>
+                <span>ssl_cert_info</span>
+                <span>reverse_dns</span>
+                <span>domain_age</span>
+            </div>
+            <div class="tool-footer">
+                <div>
+                    <span class="tool-tier tier-free">Free</span>
+                    <span style="margin-left: 6px;" class="tool-tier tier-pro">Pro</span>
+                </div>
+                <a href="#pricing" class="tool-btn tool-btn-primary">Get It</a>
+            </div>
+        </div>
+
+        <!-- Email Deliverability -->
+        <div class="tool-card" style="--card-accent: #3fb950;">
+            <div class="tool-icon" style="background: rgba(63,185,80,0.1); color: #3fb950;">&#x2709;</div>
+            <h3>Email Deliverability Checker</h3>
+            <div class="tool-id">mcp-email-deliverability</div>
+            <p>
+                Validate SPF, DKIM, and DMARC records for any domain. Check spam scores,
+                analyze policy strength, detect misconfigurations, and get actionable recommendations.
+            </p>
+            <div class="tool-features">
+                <span>check_spf</span>
+                <span>check_dkim</span>
+                <span>check_dmarc</span>
+                <span>spam_score</span>
+                <span>domain_reputation</span>
+                <span>validate_email</span>
+            </div>
+            <div class="tool-footer">
+                <div>
+                    <span class="tool-tier tier-free">Free</span>
+                    <span style="margin-left: 6px;" class="tool-tier tier-pro">Pro</span>
+                </div>
+                <a href="#pricing" class="tool-btn tool-btn-primary">Get It</a>
+            </div>
+        </div>
+
+        <!-- PDF Toolkit -->
+        <div class="tool-card" style="--card-accent: #f85149;">
+            <div class="tool-icon" style="background: rgba(248,81,73,0.1); color: #f85149;">&#x1F4C4;</div>
+            <h3>PDF Toolkit Pro</h3>
+            <div class="tool-id">mcp-pdf-toolkit</div>
+            <p>
+                Merge, split, extract text, fill forms, add watermarks, OCR scanned pages,
+                and convert PDFs to images. Seven production-grade tools in one server.
+            </p>
+            <div class="tool-features">
+                <span>merge_pdfs</span>
+                <span>split_pdf</span>
+                <span>extract_text</span>
+                <span>fill_form</span>
+                <span>add_watermark</span>
+                <span>pdf_ocr</span>
+                <span>pdf_to_images</span>
+            </div>
+            <div class="tool-footer">
+                <div>
+                    <span class="tool-tier tier-free">Free</span>
+                    <span style="margin-left: 6px;" class="tool-tier tier-pro">Pro</span>
+                </div>
+                <a href="#pricing" class="tool-btn tool-btn-primary">Get It</a>
+            </div>
+        </div>
+
+        <!-- Image Tools -->
+        <div class="tool-card" style="--card-accent: #bc8cff;">
+            <div class="tool-icon" style="background: rgba(188,140,255,0.1); color: #bc8cff;">&#x1F5BC;</div>
+            <h3>Image Processing Suite</h3>
+            <div class="tool-id">mcp-image-tools</div>
+            <p>
+                Resize with aspect ratio control, convert between formats, compress with quality targets,
+                add watermarks, strip metadata, read EXIF data, and batch process entire folders.
+            </p>
+            <div class="tool-features">
+                <span>resize_image</span>
+                <span>convert_format</span>
+                <span>compress_image</span>
+                <span>add_watermark</span>
+                <span>strip_metadata</span>
+                <span>read_exif</span>
+                <span>batch_process</span>
+            </div>
+            <div class="tool-footer">
+                <div>
+                    <span class="tool-tier tier-free">Free</span>
+                    <span style="margin-left: 6px;" class="tool-tier tier-pro">Pro</span>
+                </div>
+                <a href="#pricing" class="tool-btn tool-btn-primary">Get It</a>
+            </div>
+        </div>
+
+        <!-- QR Code -->
+        <div class="tool-card" style="--card-accent: #f0b232;">
+            <div class="tool-icon" style="background: rgba(240,178,50,0.1); color: #f0b232;">&#x25A3;</div>
+            <h3>QR Code Factory</h3>
+            <div class="tool-id">mcp-qrcode</div>
+            <p>
+                Generate QR codes from any data (URLs, text, vCards, WiFi configs).
+                Decode existing QR codes. Support for PNG/SVG output, custom styling,
+                error correction levels, and bulk generation.
+            </p>
+            <div class="tool-features">
+                <span>generate_qr</span>
+                <span>decode_qr</span>
+                <span>vcard_qr</span>
+                <span>wifi_qr</span>
+                <span>styled_qr</span>
+                <span>bulk_generate</span>
+            </div>
+            <div class="tool-footer">
+                <div>
+                    <span class="tool-tier tier-free">Free</span>
+                    <span style="margin-left: 6px;" class="tool-tier tier-pro">Pro</span>
+                </div>
+                <a href="#pricing" class="tool-btn tool-btn-primary">Get It</a>
+            </div>
+        </div>
+
+        <!-- Coming Soon: Git Analyzer -->
+        <div class="tool-card coming-soon" style="--card-accent: #56d4dd;">
+            <span class="coming-badge">Coming Soon</span>
+            <div class="tool-icon" style="background: rgba(86,212,221,0.1); color: #56d4dd;">&#x1F333;</div>
+            <h3>Git Repo Analyzer</h3>
+            <div class="tool-id">mcp-git-analyzer</div>
+            <p>
+                Commit frequency analysis, contributor stats, branch health, code churn detection,
+                release cadence tracking, and repo quality scoring.
+            </p>
+            <div class="tool-features">
+                <span>commit_stats</span>
+                <span>contributor_map</span>
+                <span>branch_health</span>
+                <span>code_churn</span>
+                <span>repo_score</span>
+            </div>
+            <div class="tool-footer">
+                <div><span class="tool-tier tier-pro">Pro $29</span></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">Notify Me</span>
+            </div>
+        </div>
+
+        <!-- Coming Soon: Log Analyzer -->
+        <div class="tool-card coming-soon" style="--card-accent: #f778ba;">
+            <span class="coming-badge">Coming Soon</span>
+            <div class="tool-icon" style="background: rgba(247,120,186,0.1); color: #f778ba;">&#x1F4CB;</div>
+            <h3>Log Analyzer</h3>
+            <div class="tool-id">mcp-log-analyzer</div>
+            <p>
+                Parse structured and unstructured logs, detect anomalies, extract error patterns,
+                generate summaries, and correlate events across log sources.
+            </p>
+            <div class="tool-features">
+                <span>parse_logs</span>
+                <span>detect_anomalies</span>
+                <span>error_patterns</span>
+                <span>log_summary</span>
+                <span>correlate</span>
+            </div>
+            <div class="tool-footer">
+                <div><span class="tool-tier tier-pro">Pro $29</span></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">Notify Me</span>
+            </div>
+        </div>
+
+        <!-- Coming Soon: SEO Audit -->
+        <div class="tool-card coming-soon" style="--card-accent: #3fb950;">
+            <span class="coming-badge">Coming Soon</span>
+            <div class="tool-icon" style="background: rgba(63,185,80,0.1); color: #3fb950;">&#x1F4C8;</div>
+            <h3>SEO Audit Tool</h3>
+            <div class="tool-id">mcp-seo-audit</div>
+            <p>
+                Technical SEO analysis, meta tag validation, structured data checking,
+                page speed insights, broken link detection, and sitemap validation.
+            </p>
+            <div class="tool-features">
+                <span>audit_page</span>
+                <span>check_meta</span>
+                <span>validate_schema</span>
+                <span>broken_links</span>
+                <span>sitemap_check</span>
+            </div>
+            <div class="tool-footer">
+                <div><span class="tool-tier tier-pro">Pro $29</span></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">Notify Me</span>
+            </div>
+        </div>
+
+        <!-- Coming Soon: Regex Debugger -->
+        <div class="tool-card coming-soon" style="--card-accent: #f0b232;">
+            <span class="coming-badge">Coming Soon</span>
+            <div class="tool-icon" style="background: rgba(240,178,50,0.1); color: #f0b232;">&#x2731;</div>
+            <h3>Regex Debugger</h3>
+            <div class="tool-id">mcp-regex</div>
+            <p>
+                Build, test, and explain regular expressions. Generate patterns from examples,
+                find matches with capture groups, and validate patterns across regex flavors.
+            </p>
+            <div class="tool-features">
+                <span>test_regex</span>
+                <span>explain_regex</span>
+                <span>generate_regex</span>
+                <span>find_matches</span>
+                <span>validate</span>
+            </div>
+            <div class="tool-footer">
+                <div><span class="tool-tier tier-pro">Pro $29</span></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">Notify Me</span>
+            </div>
+        </div>
+
+        <!-- Coming Soon: Schema Diff -->
+        <div class="tool-card coming-soon" style="--card-accent: #58a6ff;">
+            <span class="coming-badge">Coming Soon</span>
+            <div class="tool-icon" style="background: rgba(88,166,255,0.1); color: #58a6ff;">&#x1F504;</div>
+            <h3>Schema Diff</h3>
+            <div class="tool-id">mcp-schema-diff</div>
+            <p>
+                Compare database schemas, API specs, JSON schemas, and config files.
+                Detect breaking changes, generate migration scripts, and track schema evolution.
+            </p>
+            <div class="tool-features">
+                <span>diff_schemas</span>
+                <span>breaking_changes</span>
+                <span>migration_gen</span>
+                <span>track_evolution</span>
+            </div>
+            <div class="tool-footer">
+                <div><span class="tool-tier tier-pro">Pro $29</span></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">Notify Me</span>
+            </div>
+        </div>
+
+        <!-- Coming Soon: Env Manager -->
+        <div class="tool-card coming-soon" style="--card-accent: #bc8cff;">
+            <span class="coming-badge">Coming Soon</span>
+            <div class="tool-icon" style="background: rgba(188,140,255,0.1); color: #bc8cff;">&#x1F511;</div>
+            <h3>Env Manager</h3>
+            <div class="tool-id">mcp-env-manager</div>
+            <p>
+                Manage .env files across environments. Compare dev/staging/prod configs,
+                detect missing variables, validate values, and sync across projects.
+            </p>
+            <div class="tool-features">
+                <span>compare_envs</span>
+                <span>detect_missing</span>
+                <span>validate_values</span>
+                <span>sync_envs</span>
+            </div>
+            <div class="tool-footer">
+                <div><span class="tool-tier tier-pro">Pro $29</span></div>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">Notify Me</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- How it works -->
+<section class="section" id="setup">
+    <div class="section-header">
+        <h2>Setup in 30 Seconds</h2>
+        <p>Install any server, add it to your Claude Code config, and you're done.</p>
+    </div>
+
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <h3>Install</h3>
+            <p><code>pip install mcp-dns-intel</code></p>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <h3>Configure</h3>
+            <p>Add to <code>claude_desktop_config.json</code> or <code>.claude.json</code></p>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <h3>Use</h3>
+            <p>Claude can now call <code>whois_lookup("github.com")</code> directly</p>
+        </div>
+    </div>
+
+    <div class="code-demo">
+        <div class="code-titlebar">
+            <div class="code-dot" style="background:#f85149;"></div>
+            <div class="code-dot" style="background:#f0b232;"></div>
+            <div class="code-dot" style="background:#3fb950;"></div>
+            <span style="margin-left:8px; font-size: 0.75rem; color: var(--text-muted);">claude_desktop_config.json</span>
+        </div>
+        <div class="code-content">
+<span class="dim">{</span>
+  <span class="string">"mcpServers"</span><span class="dim">: {</span>
+    <span class="string">"dns-intel"</span><span class="dim">: {</span>
+      <span class="string">"command"</span><span class="dim">:</span> <span class="string">"python"</span><span class="dim">,</span>
+      <span class="string">"args"</span><span class="dim">: [</span><span class="string">"-m"</span><span class="dim">,</span> <span class="string">"src.server"</span><span class="dim">],</span>
+      <span class="string">"cwd"</span><span class="dim">:</span> <span class="string">"/path/to/mcp-dns-intel"</span>
+    <span class="dim">}</span>
+  <span class="dim">}</span>
+<span class="dim">}</span>
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- Pricing -->
+<section class="section" id="pricing">
+    <div class="section-header">
+        <h2>Simple Pricing</h2>
+        <p>Basic tools work forever. Pro unlocks the full power.</p>
+    </div>
+
+    <div class="bundle-banner">
+        <div class="bundle-info">
+            <h3>All 5 Servers Bundle</h3>
+            <p>Every current and future MCP server, one purchase.</p>
+        </div>
+        <div style="display:flex; align-items:center; gap:16px;">
+            <div class="bundle-price">
+                <span class="old">$145</span>
+                <span class="new">$79</span>
+            </div>
+            <a href="#" class="tool-btn tool-btn-primary">Get Bundle</a>
+        </div>
+    </div>
+
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h3>Basic</h3>
+            <p style="color: var(--text-secondary); font-size: 0.85rem;">Free forever</p>
+            <div class="price">
+                <span class="currency">$</span>0
+            </div>
+            <ul class="pricing-list">
+                <li><span class="check">&#10003;</span> All 5 MCP servers</li>
+                <li><span class="check">&#10003;</span> Core tool functions</li>
+                <li><span class="check">&#10003;</span> Community support</li>
+                <li><span class="x">&#x2013;</span> Rate limited (10 calls/min)</li>
+                <li><span class="x">&#x2013;</span> No batch operations</li>
+                <li><span class="x">&#x2013;</span> No priority support</li>
+            </ul>
+            <a href="#" class="pricing-btn pricing-btn-free">Download Free</a>
+        </div>
+
+        <div class="pricing-card featured">
+            <h3>Pro</h3>
+            <p style="color: var(--accent-purple); font-size: 0.85rem;">30-day free trial</p>
+            <div class="price">
+                <span class="currency">$</span>29<span class="period"> / server</span>
+            </div>
+            <ul class="pricing-list">
+                <li><span class="check">&#10003;</span> Everything in Basic</li>
+                <li><span class="check">&#10003;</span> Unlimited calls</li>
+                <li><span class="check">&#10003;</span> Batch processing</li>
+                <li><span class="check">&#10003;</span> Advanced features</li>
+                <li><span class="check">&#10003;</span> Priority support</li>
+                <li><span class="check">&#10003;</span> Future updates</li>
+            </ul>
+            <a href="#" class="pricing-btn pricing-btn-pro">Start Free Trial</a>
+        </div>
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- Projects -->
+<section class="section" id="projects">
+    <div class="section-header">
+        <h2>Other Projects</h2>
+        <p>Production tools and platforms built for real-world use cases.</p>
+    </div>
+
+    <div class="projects-grid">
+
+        <!-- ShieldOS -->
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon" style="background: rgba(248,81,73,0.1); color: #f85149;">&#x1F6E1;</div>
+                <div>
+                    <h3>ShieldOS</h3>
+                    <div class="project-type">Security Platform</div>
+                </div>
+            </div>
+            <div class="project-status status-live"><span class="status-dot"></span> Live</div>
+            <p>
+                Consolidated security guard platform. CLI-first with dashboard.
+                Scans code quality, validates specs, enforces shell safety rules, and gates deployments.
+            </p>
+            <div class="project-tags">
+                <span class="tag-python">Python</span>
+                <span class="tag-security">Security</span>
+                <span class="tag-cli">CLI</span>
+            </div>
+        </div>
+
+        <!-- DevGuard -->
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon" style="background: rgba(88,166,255,0.1); color: #58a6ff;">&#x1F50D;</div>
+                <div>
+                    <h3>DevGuard</h3>
+                    <div class="project-type">Code Quality Inspector</div>
+                </div>
+            </div>
+            <div class="project-status status-live"><span class="status-dot"></span> Live</div>
+            <p>
+                Automated code quality scanner with React dashboard.
+                Detects placeholders, hardcoded secrets, missing tests, and anti-patterns.
+                Integrates as a git hook.
+            </p>
+            <div class="project-tags">
+                <span class="tag-python">Python</span>
+                <span class="tag-react">React</span>
+                <span class="tag-security">Security</span>
+            </div>
+        </div>
+
+        <!-- AI Receptionist -->
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon" style="background: rgba(188,140,255,0.1); color: #bc8cff;">&#x1F4DE;</div>
+                <div>
+                    <h3>AI Receptionist</h3>
+                    <div class="project-type">AI Phone Agent</div>
+                </div>
+            </div>
+            <div class="project-status status-live"><span class="status-dot"></span> Live</div>
+            <p>
+                AI-powered phone receptionist for law firms and property management.
+                Handles calls via Twilio, integrates with Clio and Buildium,
+                books appointments, and routes urgent matters.
+            </p>
+            <div class="project-tags">
+                <span class="tag-python">Python</span>
+                <span class="tag-fastapi">FastAPI</span>
+                <span class="tag-ai">AI / Ollama</span>
+            </div>
+        </div>
+
+        <!-- QSDE -->
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon" style="background: rgba(63,185,80,0.1); color: #3fb950;">&#x1F4B9;</div>
+                <div>
+                    <h3>QSDE</h3>
+                    <div class="project-type">Quantitative Trading Engine</div>
+                </div>
+            </div>
+            <div class="project-status status-live"><span class="status-dot"></span> Live</div>
+            <p>
+                Autonomous strategy breeding engine with genetic algorithms.
+                318 symbols, 58K+ strategies, 53 gene types. Multi-broker support
+                (IBKR, Coinbase, Gemini, Kraken, Robinhood).
+            </p>
+            <div class="project-tags">
+                <span class="tag-python">Python</span>
+                <span class="tag-fastapi">FastAPI</span>
+                <span class="tag-trading">Trading</span>
+                <span class="tag-ai">GPU / CUDA</span>
+            </div>
+        </div>
+
+        <!-- AIRadar -->
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon" style="background: rgba(86,212,221,0.1); color: #56d4dd;">&#x1F4E1;</div>
+                <div>
+                    <h3>AI Radar</h3>
+                    <div class="project-type">AI Intelligence Scanner</div>
+                </div>
+            </div>
+            <div class="project-status status-live"><span class="status-dot"></span> Live</div>
+            <p>
+                Scans 24 AI news sources every 30 minutes. Ollama-powered analysis
+                identifies model releases, tool updates, and business opportunities.
+                Surfaces derivative insights for your own projects.
+            </p>
+            <div class="project-tags">
+                <span class="tag-python">Python</span>
+                <span class="tag-fastapi">FastAPI</span>
+                <span class="tag-ai">AI / Ollama</span>
+            </div>
+        </div>
+
+        <!-- Income Agents -->
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon" style="background: rgba(240,178,50,0.1); color: #f0b232;">&#x1F4E6;</div>
+                <div>
+                    <h3>Income Agents</h3>
+                    <div class="project-type">CLI Tool Suite</div>
+                </div>
+            </div>
+            <div class="project-status status-live"><span class="status-dot"></span> On Gumroad</div>
+            <p>
+                4 standalone CLI tools: ScrapeKit (web scraping), SEO Audit Tool,
+                Content Forge (content generation), and Resume Craft.
+                Hash-based license gate, 30-day free trial.
+            </p>
+            <div class="project-tags">
+                <span class="tag-python">Python</span>
+                <span class="tag-cli">CLI</span>
+                <span class="tag-ai">AI</span>
+            </div>
+        </div>
+
+        <!-- SpecForge -->
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon" style="background: rgba(247,120,186,0.1); color: #f778ba;">&#x1F3ED;</div>
+                <div>
+                    <h3>SpecForge</h3>
+                    <div class="project-type">Build Pipeline</div>
+                </div>
+            </div>
+            <div class="project-status status-live"><span class="status-dot"></span> Live</div>
+            <p>
+                Spec-to-code pipeline with SHA-256 locking. Define what you're building,
+                freeze the spec, build against it, verify adherence. Prevents AI drift
+                and scope creep.
+            </p>
+            <div class="project-tags">
+                <span class="tag-python">Python</span>
+                <span class="tag-cli">CLI</span>
+                <span class="tag-infra">Infrastructure</span>
+            </div>
+        </div>
+
+        <!-- AgentForge -->
+        <div class="project-card">
+            <div class="project-header">
+                <div class="project-icon" style="background: rgba(88,166,255,0.1); color: #58a6ff;">&#x1F916;</div>
+                <div>
+                    <h3>AgentForge</h3>
+                    <div class="project-type">Agent Infrastructure</div>
+                </div>
+            </div>
+            <div class="project-status status-live"><span class="status-dot"></span> Live</div>
+            <p>
+                Docker-based AI agent ecosystem. OpenHands + NullClaw + n8n + LiteLLM + Portainer.
+                All free-tier. ShieldWall MCP bridge connects Claude tools to autonomous agents.
+            </p>
+            <div class="project-tags">
+                <span class="tag-python">Python</span>
+                <span class="tag-infra">Docker</span>
+                <span class="tag-ai">AI Agents</span>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<hr class="divider">
+
+<!-- CTA -->
+<section class="cta-section">
+    <h2>Want a custom MCP server?</h2>
+    <p>Need an MCP server for your specific use case? I build production-grade MCP tools for teams and companies.</p>
+    <a href="mailto:yat.trading.systems@gmail.com" class="btn btn-primary">Get in Touch</a>
+</section>
+
+<hr class="divider">
+
+<!-- Footer -->
+<footer>
+    <div class="footer-links">
+        <a href="https://github.com/tiranmoskovitch-dev">GitHub</a>
+        <a href="index.html">Portfolio</a>
+        <a href="mailto:yat.trading.systems@gmail.com">Contact</a>
+    </div>
+    <p class="footer-copy">Built by Tiran Moskovitch. MCP servers for developers who ship.</p>
+</footer>
+
+<script>
+function copyInstall(btn) {
+    navigator.clipboard.writeText('pip install mcp-dns-intel');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+    }, 2000);
+}
+</script>
+
+</body>
+</html>
