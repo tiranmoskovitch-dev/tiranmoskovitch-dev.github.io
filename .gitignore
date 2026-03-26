@@ -10,7 +10,13 @@ Desktop.ini
 *.swo
 *~
 
-# Build artifacts (none expected, but just in case)
+# Build artifacts
 node_modules/
 dist/
 .cache/
+
+# HF Space deployment files (managed separately)
+deploy/
+__pycache__/
+*.pyc
+*.db

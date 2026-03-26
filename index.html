@@ -559,6 +559,28 @@
 
         .footer-links a:hover { color: var(--text-primary); }
 
+        /* ── Demo Links ──────────────────────────────────── */
+        .demo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.45rem 0.9rem;
+            border-radius: 6px;
+            background: linear-gradient(135deg, var(--accent-green), #059669);
+            color: white;
+            text-decoration: none;
+            margin-top: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .demo-link:hover { opacity: 0.9; color: white; transform: translateY(-1px); }
+
+        .demo-link::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #bbf7d0; animation: pulse-dot 1.5s infinite; }
+
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
         /* ── Animations ───────────────────────────────────── */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -643,7 +665,7 @@
 <section id="projects">
     <div class="section-header">
         <h2>Projects</h2>
-        <p>Private systems built from scratch. Each one runs autonomously as part of a larger AI operating system.</p>
+        <p>Private systems built from scratch. Each one runs autonomously as part of a larger AI operating system. Projects marked with <span style="color:var(--accent-green)">LIVE DEMO</span> can be tried directly.</p>
     </div>
 
     <div class="projects-grid">
@@ -790,6 +812,7 @@
                 <span class="tech-badge">Ollama</span>
                 <span class="tech-badge">SQLite</span>
             </div>
+            <a href="https://TiranMosko-ai-radar.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
         </div>
 
         <!-- AgentRunner -->
@@ -841,6 +864,7 @@
                 <span class="tech-badge">SQLite</span>
                 <span class="tech-badge">Ollama</span>
             </div>
+            <a href="https://TiranMosko-career-builder.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
         </div>
 
         <!-- MailFinance -->
@@ -918,6 +942,7 @@
                 <span class="tech-badge">MCP Protocol</span>
                 <span class="tech-badge">Jinja2</span>
             </div>
+            <a href="https://TiranMosko-businessos.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
         </div>
 
     </div>
@@ -967,7 +992,7 @@
 <section id="products">
     <div class="section-header">
         <h2>Public Products</h2>
-        <p>Open-source tools and premium packages available now.</p>
+        <p>Free to try. Premium features unlock after purchase — direct payment via Stripe (2.9% fee, no middleman).</p>
     </div>
 
     <div class="products-grid">
@@ -980,7 +1005,7 @@
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                     GitHub
                 </a>
-                <a href="https://tirandev.gumroad.com" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
+                <a href="https://TiranMosko-seo-audit.hf.space" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
             </div>
         </div>
 
@@ -992,7 +1017,7 @@
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                     GitHub
                 </a>
-                <a href="https://tirandev.gumroad.com" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
+                <a href="https://TiranMosko-seo-audit.hf.space" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
             </div>
         </div>
 
@@ -1004,7 +1029,7 @@
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                     GitHub
                 </a>
-                <a href="https://tirandev.gumroad.com" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
+                <a href="https://TiranMosko-seo-audit.hf.space" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
             </div>
         </div>
 
@@ -1016,7 +1041,7 @@
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                     GitHub
                 </a>
-                <a href="https://tirandev.gumroad.com" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
+                <a href="https://TiranMosko-seo-audit.hf.space" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
             </div>
         </div>
 
@@ -1028,7 +1053,7 @@
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                     GitHub
                 </a>
-                <a href="https://whop.com/tiran-ai-tech" target="_blank" rel="noopener" class="btn btn-primary">Buy on Whop</a>
+                <a href="#products" target="_blank" rel="noopener" class="btn btn-primary">Buy on Whop</a>
             </div>
         </div>
 
@@ -1036,7 +1061,7 @@
             <h3>MCP Starter Arsenal</h3>
             <p class="product-desc">Pre-configured bundle of MCP servers, custom agents, slash commands, and keybindings for Claude Code power users.</p>
             <div class="product-buttons">
-                <a href="https://whop.com/tiran-ai-tech" target="_blank" rel="noopener" class="btn btn-primary">Buy on Whop</a>
+                <a href="#products" target="_blank" rel="noopener" class="btn btn-primary">Buy on Whop</a>
             </div>
         </div>
 
@@ -1052,8 +1077,8 @@
     </div>
     <div class="footer-links">
         <a href="https://github.com/tiranmoskovitch-dev" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://tirandev.gumroad.com" target="_blank" rel="noopener">Gumroad</a>
-        <a href="https://whop.com/tiran-ai-tech" target="_blank" rel="noopener">Whop</a>
+        <a href="https://huggingface.co/TiranMosko" target="_blank" rel="noopener">Demos</a>
+        <a href="#products">Products</a>
     </div>
 </footer>
 
