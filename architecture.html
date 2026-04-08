@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-OS Architecture Map</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d1117;color:#e6edf3;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;overflow:hidden}
+svg{width:100vw;height:100vh;cursor:grab}
+svg:active{cursor:grabbing}
+.legend{position:fixed;top:1rem;left:1rem;background:rgba(13,17,23,.92);border:1px solid #30363d;border-radius:10px;padding:.75rem 1rem;z-index:10;max-height:90vh;overflow-y:auto}
+.legend h4{font-size:.72rem;color:#6e7681;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.legend-item{display:flex;align-items:center;gap:.5rem;padding:.15rem 0}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-label{font-size:.72rem;color:#8b949e}
+.tooltip{position:fixed;pointer-events:none;background:rgba(13,17,23,.95);border:1px solid #484f58;border-radius:8px;padding:.75rem 1rem;font-size:.8rem;color:#e6edf3;max-width:300px;z-index:20;opacity:0;transition:opacity .15s}
+.tooltip .tt-label{font-weight:700;margin-bottom:.25rem}
+.tooltip .tt-cat{font-size:.7rem;color:#6e7681;margin-bottom:.25rem}
+.tooltip .tt-desc{font-size:.75rem;color:#8b949e;line-height:1.4}
+.controls{position:fixed;top:1rem;right:1rem;display:flex;gap:.4rem;z-index:10;flex-wrap:wrap;max-width:200px;justify-content:flex-end}
+.ctrl-btn{background:rgba(13,17,23,.9);border:1px solid #30363d;border-radius:6px;color:#8b949e;font-size:.72rem;padding:.35rem .6rem;cursor:pointer;transition:all .2s}
+.ctrl-btn:hover{border-color:#58a6ff;color:#58a6ff}
+.ctrl-btn.active{border-color:#bc8cff;color:#bc8cff;background:rgba(188,140,255,.1)}
+.title-bar{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:rgba(13,17,23,.92);border:1px solid #30363d;border-radius:10px;padding:.5rem 1.5rem;z-index:10;text-align:center}
+.title-bar h3{font-size:.9rem;font-weight:700;background:linear-gradient(135deg,#58a6ff,#bc8cff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.title-bar p{font-size:.7rem;color:#6e7681}
+</style>
+</head>
+<body>
+
+<div class="legend" id="legend"></div>
+<div class="tooltip" id="tooltip"></div>
+<div class="controls" id="controls"></div>
+<div class="title-bar">
+    <h3>AI-OS Architecture Map</h3>
+    <p>Drag nodes, scroll to zoom, click to highlight connections</p>
+</div>
+
+<svg id="graph"></svg>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+// ── Graph Data from PCC ──────────────────────────────────
+const categories = {
+    "project":      {label:"Projects",              color:"#58a6ff"},
+    "security":     {label:"Security & Governance",  color:"#f85149"},
+    "trading":      {label:"Trading",                color:"#d29922"},
+    "income":       {label:"Income & Career",        color:"#3fb950"},
+    "ai-agent":     {label:"AI Agents",              color:"#bc8cff"},
+    "hook":         {label:"Hooks (Defense)",         color:"#f97316"},
+    "mcp":          {label:"MCP Servers",             color:"#06b6d4"},
+    "database":     {label:"Databases",              color:"#64748b"},
+    "external":     {label:"External Services",      color:"#8b5cf6"},
+    "infra":        {label:"Infrastructure",         color:"#39d353"},
+};
+
+const nodes = [
+    // Core Projects
+    {id:"qsde",label:"QSDE",cat:"trading",r:22,desc:"47K LOC, GPU trading engine, 318 symbols, 58K strategies"},
+    {id:"rssc",label:"RSSC",cat:"trading",r:20,desc:"33K LOC, 24/7 market scanner, 499 assets, 10 workers"},
+    {id:"businessos",label:"BusinessOS",cat:"income",r:16,desc:"12K LOC, multi-tenant ordering, 78 MCP tools"},
+    {id:"devguard",label:"DevGuard",cat:"security",r:15,desc:"10K LOC, code quality inspector, React dashboard"},
+    {id:"shieldwall",label:"ShieldWall",cat:"security",r:14,desc:"6K LOC, 3-layer AI governance firewall, 65+ patterns"},
+    {id:"shieldos",label:"ShieldOS",cat:"security",r:13,desc:"5K LOC, unified security scanner, absorbs DevGuard+ShieldWall"},
+    {id:"codeshield",label:"CodeShield",cat:"security",r:13,desc:"7.8K LOC, 7-layer regression guard, AST diffing"},
+    {id:"mechagent",label:"MechAgent",cat:"ai-agent",r:13,desc:"8.2K LOC, AI CAD agent, natural language to 3D models"},
+    {id:"clipforge",label:"ClipForge",cat:"income",r:12,desc:"5.5K LOC, React Native video editor, FFmpeg"},
+    {id:"overseer",label:"Overseer",cat:"infra",r:12,desc:"4.6K LOC, SRE agent, 10 sensors + 8 healers"},
+    {id:"agentrunner",label:"AgentRunner",cat:"ai-agent",r:11,desc:"4K LOC, headless task executor, $50/day budget"},
+    {id:"releasegrade",label:"ReleaseGrade",cat:"infra",r:11,desc:"4.1K LOC, A-F project grading, fix queue"},
+    {id:"smarttabs",label:"SmartTabs",cat:"ai-agent",r:11,desc:"4.1K LOC, AI tab manager, MCP resource server"},
+    {id:"netguard",label:"NetGuard",cat:"security",r:11,desc:"3.8K LOC, network traffic analyzer, IDS"},
+    {id:"career",label:"CareerBuilder",cat:"income",r:11,desc:"3.7K LOC, AI career coach, 6 platforms"},
+    {id:"learning",label:"LearningHelper",cat:"ai-agent",r:11,desc:"3.6K LOC, adaptive AI tutor, quiz generation"},
+    {id:"pcc",label:"PCC",cat:"infra",r:11,desc:"3.5K LOC, unified dashboard, auto-starts every session"},
+    {id:"promptforge",label:"PromptForge",cat:"infra",r:10,desc:"3.1K LOC, prompt enrichment gate, persona injection"},
+    {id:"buildguard",label:"BuildGuard",cat:"infra",r:9,desc:"2.7K LOC, 7-step build pipeline, contract enforcement"},
+    {id:"receptionist",label:"AIReceptionist",cat:"income",r:9,desc:"2.5K LOC, Twilio phone agent, Clio/Buildium CRM"},
+    {id:"specforge",label:"SpecForge",cat:"infra",r:9,desc:"1.9K LOC, spec-to-code pipeline, SHA-256 locking"},
+    {id:"focusguard",label:"FocusGuard",cat:"ai-agent",r:8,desc:"1.6K LOC, ADHD focus assistant, desktop GUI"},
+    {id:"aiRadar",label:"AIRadar",cat:"ai-agent",r:8,desc:"1.1K LOC, 24-source AI intel scanner, 30-min cycle"},
+    {id:"agentforge",label:"AgentForge",cat:"infra",r:8,desc:"831 LOC, Docker agent ecosystem, OpenHands+n8n"},
+    {id:"mailfinance",label:"MailFinance",cat:"income",r:7,desc:"258 LOC, Gmail finance analyzer"},
+
+    // Hooks
+    {id:"h-sandbox",label:"sandbox-guard",cat:"hook",r:7,desc:"15-rule shell firewall, blocks dangerous bash patterns"},
+    {id:"h-sentinel",label:"shieldwall-sentinel",cat:"hook",r:7,desc:"ShieldWall Layer 1: pre-execution governance"},
+    {id:"h-watcher",label:"shieldwall-watcher",cat:"hook",r:7,desc:"ShieldWall Layer 2: post-execution compliance"},
+    {id:"h-triguard",label:"triguard-validate",cat:"hook",r:7,desc:"Spec adherence + placeholder detection on every edit"},
+    {id:"h-integrity",label:"project-integrity",cat:"hook",r:6,desc:"Debounced analysis for unused files, drift"},
+    {id:"h-promptforge",label:"prompt-forge",cat:"hook",r:6,desc:"Task classification, persona injection, context scoring"},
+
+    // MCP Servers (grouped)
+    {id:"mcp-local",label:"16 Local MCP",cat:"mcp",r:14,desc:"my-ide, memory, filesystem, sqlite, github, puppeteer, docker, fetch, sequential-thinking, multi-search, etc."},
+    {id:"mcp-cloud",label:"7 Cloud MCP",cat:"mcp",r:11,desc:"Gmail, Slack, Hugging Face, Cloudflare, Indeed, Excalidraw, GraphOS"},
+    {id:"mcp-tunnel",label:"mcp-tunnel",cat:"mcp",r:8,desc:"Multi-session message broker, port 8818"},
+
+    // External
+    {id:"ollama",label:"Ollama",cat:"external",r:16,desc:"Local LLM backend: llama3.1, qwen2.5, qwen2.5-coder, 15+ models"},
+
+    // Databases (grouped)
+    {id:"db-layer",label:"10 SQLite DBs",cat:"database",r:12,desc:"career_builder, runner, ai_radar, shieldwall, shieldos, devguard, hub, mail_finance, learning_helper, netguard"},
+];
+
+const links = [
+    // Hook execution chain
+    {source:"h-promptforge",target:"h-sandbox",type:"chain"},
+    {source:"h-sandbox",target:"h-sentinel",type:"chain"},
+    {source:"h-sentinel",target:"h-watcher",type:"chain"},
+    {source:"h-watcher",target:"h-triguard",type:"chain"},
+    {source:"h-triguard",target:"h-integrity",type:"chain"},
+
+    // Hooks enforce on projects
+    {source:"h-sandbox",target:"shieldwall",type:"enforces"},
+    {source:"h-sentinel",target:"shieldwall",type:"enforces"},
+    {source:"h-watcher",target:"shieldwall",type:"enforces"},
+    {source:"h-triguard",target:"specforge",type:"enforces"},
+    {source:"h-promptforge",target:"promptforge",type:"enforces"},
+
+    // ShieldOS absorbs
+    {source:"shieldos",target:"shieldwall",type:"depends"},
+    {source:"shieldos",target:"devguard",type:"depends"},
+
+    // Ollama dependencies
+    {source:"devguard",target:"ollama",type:"depends"},
+    {source:"aiRadar",target:"ollama",type:"depends"},
+    {source:"mailfinance",target:"ollama",type:"depends"},
+    {source:"agentforge",target:"ollama",type:"depends"},
+    {source:"learning",target:"ollama",type:"depends"},
+    {source:"mechagent",target:"ollama",type:"depends"},
+    {source:"receptionist",target:"ollama",type:"depends"},
+    {source:"shieldos",target:"ollama",type:"depends"},
+
+    // Infrastructure connections
+    {source:"pcc",target:"qsde",type:"monitors"},
+    {source:"pcc",target:"rssc",type:"monitors"},
+    {source:"pcc",target:"shieldwall",type:"monitors"},
+    {source:"pcc",target:"devguard",type:"monitors"},
+    {source:"pcc",target:"career",type:"monitors"},
+    {source:"pcc",target:"aiRadar",type:"monitors"},
+    {source:"pcc",target:"businessos",type:"monitors"},
+
+    {source:"overseer",target:"pcc",type:"depends"},
+    {source:"overseer",target:"ollama",type:"depends"},
+
+    {source:"agentrunner",target:"career",type:"depends"},
+    {source:"agentrunner",target:"specforge",type:"depends"},
+
+    {source:"releasegrade",target:"devguard",type:"depends"},
+    {source:"releasegrade",target:"codeshield",type:"depends"},
+
+    {source:"buildguard",target:"specforge",type:"depends"},
+    {source:"buildguard",target:"releasegrade",type:"depends"},
+
+    {source:"promptforge",target:"specforge",type:"depends"},
+
+    {source:"codeshield",target:"qsde",type:"protects"},
+    {source:"codeshield",target:"rssc",type:"protects"},
+    {source:"codeshield",target:"shieldwall",type:"protects"},
+    {source:"codeshield",target:"career",type:"protects"},
+    {source:"codeshield",target:"businessos",type:"protects"},
+
+    // MCP layer
+    {source:"mcp-local",target:"pcc",type:"uses"},
+    {source:"mcp-local",target:"agentrunner",type:"uses"},
+    {source:"mcp-local",target:"db-layer",type:"uses"},
+    {source:"mcp-cloud",target:"career",type:"uses"},
+    {source:"mcp-cloud",target:"mailfinance",type:"uses"},
+    {source:"mcp-tunnel",target:"agentrunner",type:"uses"},
+
+    // Database layer
+    {source:"qsde",target:"db-layer",type:"stores"},
+    {source:"rssc",target:"db-layer",type:"stores"},
+    {source:"career",target:"db-layer",type:"stores"},
+    {source:"aiRadar",target:"db-layer",type:"stores"},
+    {source:"shieldwall",target:"db-layer",type:"stores"},
+    {source:"devguard",target:"db-layer",type:"stores"},
+    {source:"netguard",target:"db-layer",type:"stores"},
+    {source:"learning",target:"db-layer",type:"stores"},
+    {source:"mailfinance",target:"db-layer",type:"stores"},
+    {source:"businessos",target:"db-layer",type:"stores"},
+
+    // SmartTabs MCP
+    {source:"smarttabs",target:"mcp-local",type:"depends"},
+];
+
+const linkColors = {
+    chain: "#f97316",
+    enforces: "#f8514966",
+    depends: "#58a6ff44",
+    monitors: "#39d35333",
+    uses: "#06b6d433",
+    stores: "#64748b33",
+    protects: "#f8514933",
+};
+
+// ── D3 Force Graph ──────────────────────────────────
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+const svg = d3.select("#graph")
+    .attr("viewBox", [0, 0, width, height]);
+
+const g = svg.append("g");
+
+// Zoom
+const zoom = d3.zoom()
+    .scaleExtent([0.3, 4])
+    .on("zoom", e => g.attr("transform", e.transform));
+svg.call(zoom);
+
+// Arrow markers
+const defs = svg.append("defs");
+Object.entries(linkColors).forEach(([type, color]) => {
+    defs.append("marker")
+        .attr("id", `arrow-${type}`)
+        .attr("viewBox","0 -5 10 10").attr("refX",20).attr("refY",0)
+        .attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto")
+        .append("path").attr("d","M0,-4L10,0L0,4").attr("fill",color.slice(0,7));
+});
+
+const simulation = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d=>d.id).distance(d => {
+        if(d.type==="chain") return 50;
+        if(d.type==="stores") return 120;
+        return 90;
+    }).strength(d => d.type==="chain"?1:.3))
+    .force("charge", d3.forceManyBody().strength(d => -d.r * 25))
+    .force("center", d3.forceCenter(width/2, height/2))
+    .force("collision", d3.forceCollide().radius(d=>d.r+8))
+    .force("x", d3.forceX(width/2).strength(.03))
+    .force("y", d3.forceY(height/2).strength(.03));
+
+// Links
+const link = g.append("g")
+    .selectAll("line")
+    .data(links)
+    .join("line")
+    .attr("stroke", d=>linkColors[d.type]||"#30363d")
+    .attr("stroke-width", d=>d.type==="chain"?2.5:1.2)
+    .attr("marker-end", d=>`url(#arrow-${d.type})`)
+    .attr("stroke-dasharray", d=>d.type==="monitors"?"4,4":null);
+
+// Node groups
+const node = g.append("g")
+    .selectAll("g")
+    .data(nodes)
+    .join("g")
+    .call(d3.drag()
+        .on("start", (e,d)=>{if(!e.active)simulation.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y})
+        .on("drag", (e,d)=>{d.fx=e.x;d.fy=e.y})
+        .on("end", (e,d)=>{if(!e.active)simulation.alphaTarget(0);d.fx=null;d.fy=null}));
+
+// Node circles with glow
+node.append("circle")
+    .attr("r", d=>d.r)
+    .attr("fill", d=>(categories[d.cat]||{color:"#58a6ff"}).color+"22")
+    .attr("stroke", d=>(categories[d.cat]||{color:"#58a6ff"}).color)
+    .attr("stroke-width", 1.5)
+    .style("filter", d=>d.r>=14?"url(#glow)":null);
+
+// Glow filter
+const filter = defs.append("filter").attr("id","glow");
+filter.append("feGaussianBlur").attr("stdDeviation","3").attr("result","blur");
+filter.append("feMerge").selectAll("feMergeNode").data(["blur","SourceGraphic"]).join("feMergeNode").attr("in",d=>d);
+
+// Node labels
+node.append("text")
+    .text(d=>d.label)
+    .attr("text-anchor","middle")
+    .attr("dy", d=>d.r+12)
+    .attr("fill","#8b949e")
+    .attr("font-size", d=>d.r>=14?"0.7rem":"0.6rem")
+    .attr("font-family","Inter, sans-serif")
+    .attr("font-weight","500");
+
+// Tooltip
+const tooltip = document.getElementById("tooltip");
+node.on("mouseenter", (e,d) => {
+    const cat = categories[d.cat]||{label:"Unknown"};
+    tooltip.innerHTML = `<div class="tt-label" style="color:${cat.color}">${d.label}</div>
+        <div class="tt-cat">${cat.label}</div>
+        <div class="tt-desc">${d.desc}</div>`;
+    tooltip.style.opacity = 1;
+}).on("mousemove", e => {
+    tooltip.style.left = (e.clientX+15)+"px";
+    tooltip.style.top = (e.clientY-10)+"px";
+}).on("mouseleave", () => { tooltip.style.opacity = 0; });
+
+// Click to highlight connections
+let selectedNode = null;
+node.on("click", (e,d) => {
+    if(selectedNode===d.id){selectedNode=null;resetHighlight();return}
+    selectedNode=d.id;
+    const connected = new Set([d.id]);
+    links.forEach(l=>{
+        const s=typeof l.source==="object"?l.source.id:l.source;
+        const t=typeof l.target==="object"?l.target.id:l.target;
+        if(s===d.id)connected.add(t);
+        if(t===d.id)connected.add(s);
+    });
+    node.select("circle").attr("opacity",n=>connected.has(n.id)?1:.15);
+    node.select("text").attr("opacity",n=>connected.has(n.id)?1:.1);
+    link.attr("opacity",l=>{
+        const s=typeof l.source==="object"?l.source.id:l.source;
+        const t=typeof l.target==="object"?l.target.id:l.target;
+        return(s===d.id||t===d.id)?1:.05;
+    });
+});
+
+function resetHighlight(){
+    node.select("circle").attr("opacity",1);
+    node.select("text").attr("opacity",1);
+    link.attr("opacity",1);
+}
+svg.on("click", e=>{if(e.target.tagName==="svg"){selectedNode=null;resetHighlight()}});
+
+// Simulation tick
+simulation.on("tick", () => {
+    link.attr("x1",d=>d.source.x).attr("y1",d=>d.source.y)
+        .attr("x2",d=>d.target.x).attr("y2",d=>d.target.y);
+    node.attr("transform",d=>`translate(${d.x},${d.y})`);
+});
+
+// Legend
+const legendEl = document.getElementById("legend");
+legendEl.innerHTML = '<h4>Node Types</h4>' +
+    Object.entries(categories).map(([k,v])=>
+        `<div class="legend-item"><div class="legend-dot" style="background:${v.color}"></div><span class="legend-label">${v.label}</span></div>`
+    ).join('') +
+    '<h4 style="margin-top:.5rem">Edge Types</h4>' +
+    '<div class="legend-item"><div class="legend-dot" style="background:#f97316"></div><span class="legend-label">Hook chain</span></div>' +
+    '<div class="legend-item"><div class="legend-dot" style="background:#58a6ff"></div><span class="legend-label">Depends on</span></div>' +
+    '<div class="legend-item"><div class="legend-dot" style="background:#f85149"></div><span class="legend-label">Enforces / Protects</span></div>' +
+    '<div class="legend-item"><div class="legend-dot" style="background:#39d353"></div><span class="legend-label">Monitors</span></div>' +
+    '<div class="legend-item"><div class="legend-dot" style="background:#64748b"></div><span class="legend-label">Data storage</span></div>';
+
+// Filter controls
+const ctrlEl = document.getElementById("controls");
+const catKeys = [...new Set(nodes.map(n=>n.cat))];
+let activeFilters = new Set(catKeys);
+
+ctrlEl.innerHTML = '<button class="ctrl-btn" onclick="resetZoom()">Reset</button>' +
+    catKeys.map(k=>`<button class="ctrl-btn active" data-cat="${k}" onclick="toggleCat('${k}',this)">${(categories[k]||{label:k}).label}</button>`).join('');
+
+window.toggleCat = function(cat, btn) {
+    if(activeFilters.has(cat)){activeFilters.delete(cat);btn.classList.remove("active")}
+    else{activeFilters.add(cat);btn.classList.add("active")}
+    node.attr("display",d=>activeFilters.has(d.cat)?null:"none");
+    link.attr("display",d=>{
+        const s=typeof d.source==="object"?d.source:nodes.find(n=>n.id===d.source);
+        const t=typeof d.target==="object"?d.target:nodes.find(n=>n.id===d.target);
+        return(activeFilters.has(s.cat)&&activeFilters.has(t.cat))?null:"none";
+    });
+};
+
+window.resetZoom = function() {
+    svg.transition().duration(500).call(zoom.transform, d3.zoomIdentity);
+};
+
+// Initial zoom to fit
+setTimeout(()=>{
+    svg.transition().duration(800).call(zoom.transform,
+        d3.zoomIdentity.translate(width*.1, height*.05).scale(0.85));
+}, 1500);
+</script>
+</body>
+</html>
