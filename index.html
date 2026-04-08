@@ -210,6 +210,52 @@
             margin: 0 auto;
         }
 
+        /* ── Complexity Tier Headers ──────────────────────── */
+        .tier-header {
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .tier-header:first-of-type { margin-top: 0; }
+
+        .tier-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .tier-header .tier-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+
+        .tier-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+        }
+
+        .complexity-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .complexity-high { background: rgba(188, 140, 255, 0.15); color: var(--accent-purple); border: 1px solid rgba(188, 140, 255, 0.3); }
+        .complexity-medium { background: rgba(88, 166, 255, 0.15); color: var(--accent-blue); border: 1px solid rgba(88, 166, 255, 0.3); }
+        .complexity-focused { background: rgba(63, 185, 80, 0.15); color: var(--accent-green); border: 1px solid rgba(63, 185, 80, 0.3); }
+
         /* ── Project Cards Grid ───────────────────────────── */
         .projects-grid {
             display: grid;
@@ -241,7 +287,7 @@
         .project-card:hover {
             border-color: var(--border-hover);
             transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border-hover);
         }
 
         .project-card:hover::before { opacity: 1; }
@@ -259,9 +305,8 @@
         .project-card[data-category="business"]::before { background: linear-gradient(90deg, var(--accent-blue), transparent); }
         .project-card[data-category="business"] { --cat-color: var(--accent-blue); --cat-glow: var(--glow-blue); }
 
-        .project-card:hover {
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border-hover);
-        }
+        .project-card[data-category="infra"]::before { background: linear-gradient(90deg, var(--accent-teal), transparent); }
+        .project-card[data-category="infra"] { --cat-color: var(--accent-teal); }
 
         .card-top {
             display: flex;
@@ -448,6 +493,44 @@
             margin-top: 0.25rem;
         }
 
+        /* ── Complexity breakdown table ───────────────────── */
+        .complexity-breakdown {
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .complexity-breakdown h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .complexity-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+        }
+
+        .complexity-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+            color: var(--text-secondary);
+        }
+
+        .complexity-table tr:last-child td { border-bottom: none; }
+
         /* ── Products Section ─────────────────────────────── */
         .products-grid {
             display: grid;
@@ -607,6 +690,8 @@
             .nav-links { display: none; }
             section { padding: 3rem 1.5rem; }
             footer { flex-direction: column; text-align: center; }
+            .complexity-table { font-size: 0.78rem; }
+            .complexity-table th, .complexity-table td { padding: 0.5rem 0.6rem; }
         }
 
         @media (max-width: 480px) {
@@ -637,24 +722,24 @@
     <p class="bio animate-in delay-2">Product Support Engineer by day, AI-OS builder by night. A self-taught systems builder who architects interconnected AI infrastructure -- from autonomous trading engines and security firewalls to career coaches and mechanical design agents -- all governed by a unified security layer and orchestrated by autonomous agents.</p>
     <div class="stats-bar animate-in delay-3">
         <div class="stat-item">
-            <div class="stat-value">33</div>
+            <div class="stat-value">38+</div>
             <div class="stat-label">Active Projects</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value">54</div>
+            <div class="stat-value">57</div>
             <div class="stat-label">MCP Servers</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value">100K+</div>
+            <div class="stat-value">180K+</div>
             <div class="stat-label">Lines of Code</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value">15</div>
+            <div class="stat-value">16</div>
             <div class="stat-label">Custom Agents</div>
         </div>
         <div class="stat-item">
-            <div class="stat-value">3</div>
-            <div class="stat-label">Security Layers</div>
+            <div class="stat-value">30</div>
+            <div class="stat-label">Security Hooks</div>
         </div>
     </div>
 </header>
@@ -665,8 +750,15 @@
 <section id="projects">
     <div class="section-header">
         <h2>Projects</h2>
-        <p>Private systems built from scratch. Each one runs autonomously as part of a larger AI operating system. Projects marked with <span style="color:var(--accent-green)">LIVE DEMO</span> can be tried directly.</p>
+        <p>Private systems built from scratch. Each runs autonomously as part of a larger AI operating system. Grouped by complexity -- from enterprise-grade multi-layer platforms to focused single-purpose tools.</p>
     </div>
+
+    <!-- ── HIGH COMPLEXITY ────────────────────────────── -->
+    <div class="tier-header">
+        <h3><span class="complexity-badge complexity-high">High</span> Enterprise-Grade Systems</h3>
+        <div class="tier-line"></div>
+    </div>
+    <p class="tier-desc">10K+ LOC, multi-layer architectures, GPU acceleration, autonomous workers, multi-tenant designs. These are full platforms with dozens of subsystems operating independently.</p>
 
     <div class="projects-grid">
 
@@ -676,18 +768,20 @@
                 <h3><span class="abbrev">QSDE</span> Quantitative Strategy Discovery Engine</h3>
                 <span class="status-badge status-active">Active</span>
             </div>
-            <p class="tagline">AI-powered trading platform that discovers, backtests, and executes strategies autonomously.</p>
+            <p class="tagline">AI-powered trading platform that discovers, backtests, and executes strategies autonomously using genetic algorithms across 318 symbols.</p>
             <ul class="capabilities">
-                <li>Autonomous strategy discovery and validation through evolutionary optimization</li>
-                <li>GPU-accelerated backtesting with slippage modeling and commission simulation</li>
-                <li>Multi-broker execution layer with paper and live trading modes</li>
+                <li>Autonomous strategy discovery and validation through evolutionary optimization with 53 gene types</li>
+                <li>GPU-accelerated backtesting (RTX 4050 / CuPy) with slippage modeling and commission simulation</li>
+                <li>Multi-broker execution layer (IBKR, Coinbase, Gemini, Kraken, Robinhood) with paper and live modes</li>
                 <li>ML model serving for real-time prediction and regime classification</li>
             </ul>
             <div class="card-metrics">
-                <span class="metric"><strong>151</strong> modules</span>
-                <span class="metric"><strong>47K</strong> LOC</span>
-                <span class="metric"><strong>N/A</strong> strategies tested</span>
-                <span class="metric"><strong>N/A</strong> data sources</span>
+                <span class="metric"><strong>148</strong> modules</span>
+                <span class="metric"><strong>47.3K</strong> LOC</span>
+                <span class="metric"><strong>58K+</strong> strategies tested</span>
+                <span class="metric"><strong>318</strong> symbols</span>
+                <span class="metric"><strong>53</strong> gene types</span>
+                <span class="metric"><strong>5</strong> brokers</span>
             </div>
             <div class="tech-stack">
                 <span class="tech-badge">Python</span>
@@ -713,8 +807,8 @@
                 <li>210-feature system with 9-page live dashboard, morning market briefings, and trade suggestions</li>
             </ul>
             <div class="card-metrics">
-                <span class="metric"><strong>42</strong> modules</span>
-                <span class="metric"><strong>16.6K</strong> LOC</span>
+                <span class="metric"><strong>99</strong> modules</span>
+                <span class="metric"><strong>33.4K</strong> LOC</span>
                 <span class="metric"><strong>499</strong> assets tracked</span>
                 <span class="metric"><strong>210</strong> features</span>
                 <span class="metric"><strong>53+</strong> strategies</span>
@@ -731,6 +825,71 @@
             </div>
         </div>
 
+        <!-- BusinessOS -->
+        <div class="project-card" data-category="business">
+            <div class="card-top">
+                <h3><span class="abbrev">BusinessOS</span> White-Label Business Platform</h3>
+                <span class="status-badge status-active">Active</span>
+            </div>
+            <p class="tagline">Multi-tenant ordering system with 78 MCP tool integrations for any business type.</p>
+            <ul class="capabilities">
+                <li>White-label storefront with customizable branding per tenant</li>
+                <li>Full ordering workflow: catalog, cart, checkout, payment, fulfillment</li>
+                <li>78 MCP tool integrations for inventory, shipping, CRM, and analytics</li>
+                <li>Admin dashboard with multi-tenant management and revenue tracking</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>76</strong> modules</span>
+                <span class="metric"><strong>12.2K</strong> LOC</span>
+                <span class="metric"><strong>78</strong> MCP tools</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">FastAPI</span>
+                <span class="tech-badge">SQLite</span>
+                <span class="tech-badge">MCP Protocol</span>
+                <span class="tech-badge">Jinja2</span>
+            </div>
+            <a href="https://TiranMosko-businessos.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
+        </div>
+
+        <!-- DevGuard -->
+        <div class="project-card" data-category="security">
+            <div class="card-top">
+                <h3><span class="abbrev">DevGuard</span> AI Development Governance</h3>
+                <span class="status-badge status-production">Production</span>
+            </div>
+            <p class="tagline">Code quality inspector and governance platform that scans every project for security, quality, and compliance issues.</p>
+            <ul class="capabilities">
+                <li>Real-time code scanning via Claude Code hooks on every file edit</li>
+                <li>Multi-category analysis: security vulnerabilities, code smells, dependency risks</li>
+                <li>React-based dashboard with project-level scoring and historical trends</li>
+                <li>CLI entry point with pip-installable package for cross-project use</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>31</strong> modules</span>
+                <span class="metric"><strong>10.1K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">FastAPI</span>
+                <span class="tech-badge">React</span>
+                <span class="tech-badge">SQLite</span>
+                <span class="tech-badge">Ollama</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ── MEDIUM COMPLEXITY ──────────────────────────── -->
+    <div class="tier-header">
+        <h3><span class="complexity-badge complexity-medium">Medium</span> Multi-System Platforms</h3>
+        <div class="tier-line"></div>
+    </div>
+    <p class="tier-desc">3K-10K LOC, multiple integrated subsystems, real-time processing, autonomous decision-making. Full-featured applications with sophisticated internal architectures.</p>
+
+    <div class="projects-grid">
+
         <!-- ShieldWall -->
         <div class="project-card" data-category="security">
             <div class="card-top">
@@ -742,15 +901,13 @@
                 <li>Real-time command interception with 65+ threat pattern categories</li>
                 <li>SHA256 integrity verification across all protected project files</li>
                 <li>Independent watchdog process that monitors and auto-recovers the entire stack</li>
-                <li>Compliance-aligned with NIST AI RMF, OWASP LLM Top 10, and EU AI Act frameworks</li>
+                <li>Compliance-aligned with NIST AI RMF, OWASP LLM Top 10, and EU AI Act</li>
             </ul>
             <div class="card-metrics">
+                <span class="metric"><strong>29</strong> modules</span>
                 <span class="metric"><strong>6K</strong> LOC</span>
-                <span class="metric"><strong>39</strong> files</span>
                 <span class="metric"><strong>3</strong> defense layers</span>
                 <span class="metric"><strong>65+</strong> threat patterns</span>
-                <span class="metric"><strong>9</strong> check categories</span>
-                <span class="metric"><strong>5-min</strong> watchdog cycle</span>
             </div>
             <div class="tech-stack">
                 <span class="tech-badge">Python</span>
@@ -769,21 +926,436 @@
             </div>
             <p class="tagline">CLI-driven security scanner with AI autopilot, quality gates, and cross-project threat management.</p>
             <ul class="capabilities">
-                <li>Consolidated security scanning across all 33 projects from a single interface</li>
+                <li>Consolidated security scanning across all 38+ projects from a single interface</li>
                 <li>AI autopilot mode that autonomously remediates common vulnerabilities</li>
                 <li>Quality gate enforcement -- blocks deployments that fail security checks</li>
                 <li>Project-level risk scoring with historical trend tracking</li>
             </ul>
             <div class="card-metrics">
-                <span class="metric"><strong>26</strong> modules</span>
-                <span class="metric"><strong>3.2K</strong> LOC</span>
-                <span class="metric"><strong>33</strong> projects scanned</span>
+                <span class="metric"><strong>38</strong> modules</span>
+                <span class="metric"><strong>5.1K</strong> LOC</span>
+                <span class="metric"><strong>38+</strong> projects scanned</span>
             </div>
             <div class="tech-stack">
                 <span class="tech-badge">Python</span>
                 <span class="tech-badge">Rich CLI</span>
                 <span class="tech-badge">SQLite</span>
                 <span class="tech-badge">Ollama</span>
+            </div>
+        </div>
+
+        <!-- MechAgent -->
+        <div class="project-card" data-category="ai">
+            <div class="card-top">
+                <h3><span class="abbrev">MechAgent</span> AI Mechanical Engineer</h3>
+                <span class="status-badge status-active">Active</span>
+            </div>
+            <p class="tagline">Conversational CAD agent that designs mechanical parts from natural language specifications.</p>
+            <ul class="capabilities">
+                <li>Natural language to parametric CAD model generation</li>
+                <li>Material selection and stress analysis with safety factor calculations</li>
+                <li>Automated engineering drawings with GD&T annotations</li>
+                <li>Multi-format export (STEP, STL, DXF) for manufacturing and 3D printing</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>33</strong> modules</span>
+                <span class="metric"><strong>8.2K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">CadQuery</span>
+                <span class="tech-badge">Ollama</span>
+                <span class="tech-badge">FastAPI</span>
+            </div>
+        </div>
+
+        <!-- CodeShield -->
+        <div class="project-card" data-category="security">
+            <div class="card-top">
+                <h3><span class="abbrev">CodeShield</span> AI Regression Guard</h3>
+                <span class="status-badge status-production">Production</span>
+            </div>
+            <p class="tagline">7-layer regression prevention system that detects and blocks function removals, silent overwrites, and code drift in real time.</p>
+            <ul class="capabilities">
+                <li>Zero-tolerance function removal detection via AST diffing on every edit</li>
+                <li>Git pre-commit hook that blocks regressions before they reach the repo</li>
+                <li>Cross-project installation -- protects 5 critical projects simultaneously</li>
+                <li>Baseline snapshots with automatic drift detection and alerting</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>39</strong> modules</span>
+                <span class="metric"><strong>7.8K</strong> LOC</span>
+                <span class="metric"><strong>7</strong> guard layers</span>
+                <span class="metric"><strong>5</strong> projects protected</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">AST</span>
+                <span class="tech-badge">Git Hooks</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+        </div>
+
+        <!-- ClipForge -->
+        <div class="project-card" data-category="business">
+            <div class="card-top">
+                <h3><span class="abbrev">ClipForge</span> Mobile Video Editor</h3>
+                <span class="status-badge status-beta">Beta</span>
+            </div>
+            <p class="tagline">Android-first mobile video editor with AI-powered effects, built with React Native and FFmpeg.</p>
+            <ul class="capabilities">
+                <li>Timeline-based video editing with trim, split, and merge operations</li>
+                <li>AI-powered effects including auto-captions, background removal, and style transfer</li>
+                <li>Hardware-accelerated rendering via FFmpeg with real-time preview</li>
+                <li>Freemium model with APK built and ready for Play Store submission</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>27</strong> modules</span>
+                <span class="metric"><strong>5.5K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">React Native</span>
+                <span class="tech-badge">Expo</span>
+                <span class="tech-badge">FFmpeg</span>
+                <span class="tech-badge">TypeScript</span>
+            </div>
+        </div>
+
+        <!-- Overseer -->
+        <div class="project-card" data-category="infra">
+            <div class="card-top">
+                <h3><span class="abbrev">Overseer</span> Autonomous SRE Agent</h3>
+                <span class="status-badge status-active">Active</span>
+            </div>
+            <p class="tagline">Self-healing infrastructure agent with 10 sensors and 8 healers that monitors, triages, and auto-fixes system issues.</p>
+            <ul class="capabilities">
+                <li>10 sensor types: port health, disk, memory, process, Docker, API latency, log errors</li>
+                <li>Ollama-powered triage that classifies severity and picks the right healer</li>
+                <li>8 auto-heal actions: restart services, clear caches, kill zombies, recycle Docker</li>
+                <li>Escalation to Claude CLI for complex fixes that healers can't resolve</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>41</strong> modules</span>
+                <span class="metric"><strong>4.6K</strong> LOC</span>
+                <span class="metric"><strong>10</strong> sensors</span>
+                <span class="metric"><strong>8</strong> healers</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">Ollama</span>
+                <span class="tech-badge">Docker SDK</span>
+                <span class="tech-badge">Claude CLI</span>
+            </div>
+        </div>
+
+        <!-- AgentRunner -->
+        <div class="project-card" data-category="ai">
+            <div class="card-top">
+                <h3><span class="abbrev">AgentRunner</span> Autonomous Task Executor</h3>
+                <span class="status-badge status-active">Active</span>
+            </div>
+            <p class="tagline">Headless daemon that executes Claude Code tasks 24/7 with cost governance and priority queuing.</p>
+            <ul class="capabilities">
+                <li>Background task queue that runs AI coding tasks without human supervision</li>
+                <li>Cost governance with per-task and daily spending limits ($50/day cap)</li>
+                <li>Priority-based scheduling with dependency resolution between tasks</li>
+                <li>Automatic logging and result capture for post-execution review</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>7</strong> modules</span>
+                <span class="metric"><strong>4K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">Claude Code SDK</span>
+                <span class="tech-badge">SQLite</span>
+                <span class="tech-badge">APScheduler</span>
+            </div>
+        </div>
+
+        <!-- ReleaseGrade -->
+        <div class="project-card" data-category="infra">
+            <div class="card-top">
+                <h3><span class="abbrev">ReleaseGrade</span> Project Quality Auditor</h3>
+                <span class="status-badge status-production">Production</span>
+            </div>
+            <p class="tagline">Automated grading system that audits every project on every code change, assigning A-F letter grades with fix queues.</p>
+            <ul class="capabilities">
+                <li>Static analysis across security, code quality, documentation, and test coverage</li>
+                <li>Letter grade system (A-F) with blocking enforcement -- C or below blocks delivery</li>
+                <li>Fix queue dashboard that prioritizes and tracks remediation across all projects</li>
+                <li>Integrated into every build cycle via mandatory post-edit hook</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>31</strong> modules</span>
+                <span class="metric"><strong>4.1K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">FastAPI</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+        </div>
+
+        <!-- SmartTabs -->
+        <div class="project-card" data-category="ai">
+            <div class="card-top">
+                <h3><span class="abbrev">SmartTabs</span> AI Browser Resource Manager</h3>
+                <span class="status-badge status-active">Active</span>
+            </div>
+            <p class="tagline">MCP-powered browser extension that auto-groups, suspends, and restores tabs based on context and resource usage.</p>
+            <ul class="capabilities">
+                <li>AI-powered tab grouping by project context and topic clustering</li>
+                <li>Memory pressure detection with automatic tab suspension and recovery</li>
+                <li>MCP resource server exposing tab state to Claude Code sessions</li>
+                <li>Session snapshots with cross-device sync and restoration</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>20</strong> modules</span>
+                <span class="metric"><strong>4.1K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">MCP Protocol</span>
+                <span class="tech-badge">Chrome Extension</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+        </div>
+
+        <!-- NetGuard -->
+        <div class="project-card" data-category="security">
+            <div class="card-top">
+                <h3><span class="abbrev">NetGuard</span> Network Security Monitor</h3>
+                <span class="status-badge status-active">Active</span>
+            </div>
+            <p class="tagline">Network traffic analyzer and intrusion detection system with real-time alerting and threat visualization.</p>
+            <ul class="capabilities">
+                <li>Packet-level traffic analysis with protocol dissection and anomaly scoring</li>
+                <li>Rule-based intrusion detection with customizable threat signatures</li>
+                <li>Real-time dashboard with traffic graphs, geo-mapping, and alert feed</li>
+                <li>Automated blocking and quarantine for detected threats</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>34</strong> modules</span>
+                <span class="metric"><strong>3.8K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">Flask</span>
+                <span class="tech-badge">Scapy</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+        </div>
+
+        <!-- CareerBuilder -->
+        <div class="project-card" data-category="business">
+            <div class="card-top">
+                <h3><span class="abbrev">CareerBuilder</span> AI Career Coach</h3>
+                <span class="status-badge status-active">Active</span>
+            </div>
+            <p class="tagline">Personal career OS with AI resume generation, skills assessment, and 6-platform profile automation.</p>
+            <ul class="capabilities">
+                <li>AI-powered resume and cover letter generation tailored per job listing</li>
+                <li>Skills gap analysis with learning path recommendations</li>
+                <li>Automated profile content generation for 6 freelance platforms</li>
+                <li>Income tracking dashboard with target milestones and task management</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>8</strong> modules</span>
+                <span class="metric"><strong>3.7K</strong> LOC</span>
+                <span class="metric"><strong>6</strong> platforms</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">Flask</span>
+                <span class="tech-badge">SQLite</span>
+                <span class="tech-badge">Ollama</span>
+            </div>
+            <a href="https://TiranMosko-career-builder.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
+        </div>
+
+        <!-- LearningHelper -->
+        <div class="project-card" data-category="ai">
+            <div class="card-top">
+                <h3><span class="abbrev">LearningHelper</span> AI Learning Assistant</h3>
+                <span class="status-badge status-active">Active</span>
+            </div>
+            <p class="tagline">Personalized AI tutor that generates quizzes, tracks knowledge gaps, and adapts difficulty based on performance.</p>
+            <ul class="capabilities">
+                <li>Adaptive quiz generation from uploaded materials with spaced repetition</li>
+                <li>Knowledge gap detection and targeted remediation suggestions</li>
+                <li>Multi-format content support: PDFs, web pages, code repositories</li>
+                <li>Progress tracking dashboard with mastery scores per topic</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>36</strong> modules</span>
+                <span class="metric"><strong>3.6K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">FastAPI</span>
+                <span class="tech-badge">Ollama</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+        </div>
+
+        <!-- ProjectCommandCenter -->
+        <div class="project-card" data-category="infra">
+            <div class="card-top">
+                <h3><span class="abbrev">PCC</span> Project Command Center</h3>
+                <span class="status-badge status-production">Production</span>
+            </div>
+            <p class="tagline">Unified dashboard that monitors all 38+ projects with live port checks, git status, and health scoring.</p>
+            <ul class="capabilities">
+                <li>Auto-starts on every Claude Code session -- always-on visibility</li>
+                <li>Live port health checks across all registered project dashboards</li>
+                <li>Git status aggregation: dirty repos, uncommitted changes, branch states</li>
+                <li>REST API for other agents and tools to query project state</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>9</strong> modules</span>
+                <span class="metric"><strong>3.5K</strong> LOC</span>
+                <span class="metric"><strong>38+</strong> projects tracked</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">FastAPI</span>
+                <span class="tech-badge">Jinja2</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ── FOCUSED TOOLS ─────────────────────────────── -->
+    <div class="tier-header">
+        <h3><span class="complexity-badge complexity-focused">Focused</span> Single-Purpose Tools</h3>
+        <div class="tier-line"></div>
+    </div>
+    <p class="tier-desc">Under 3K LOC, purpose-built for one job. Small footprint, high leverage -- each one solves a specific problem in the ecosystem pipeline.</p>
+
+    <div class="projects-grid">
+
+        <!-- PromptForge -->
+        <div class="project-card" data-category="ai">
+            <div class="card-top">
+                <h3><span class="abbrev">PromptForge</span> Prompt Enrichment Engine</h3>
+                <span class="status-badge status-production">Production</span>
+            </div>
+            <p class="tagline">Intelligent prompt gate that classifies tasks, injects expert personas, and scores context quality before execution.</p>
+            <ul class="capabilities">
+                <li>9-type task classification with persona injection for each domain</li>
+                <li>Context scoring (0-100%) with targeted questions for missing information</li>
+                <li>Session tracking that carries project context across prompts</li>
+                <li>Hooks into every Claude Code session via UserPromptSubmit</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>11</strong> modules</span>
+                <span class="metric"><strong>3.1K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">Claude Code Hooks</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+        </div>
+
+        <!-- BuildGuard -->
+        <div class="project-card" data-category="infra">
+            <div class="card-top">
+                <h3><span class="abbrev">BuildGuard</span> Build Pipeline Orchestrator</h3>
+                <span class="status-badge status-production">Production</span>
+            </div>
+            <p class="tagline">7-step build pipeline that enforces contract-before-build, test gates, and delta reporting on every project change.</p>
+            <ul class="capabilities">
+                <li>CONTRACT_BEFORE_BUILD rule -- no code written without an approved spec</li>
+                <li>Hard test gates after every function -- build stops on failure</li>
+                <li>Delta reports tracking planned vs built vs tested at end of each session</li>
+                <li>CLI interface and PCC dashboard integration</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>13</strong> modules</span>
+                <span class="metric"><strong>2.7K</strong> LOC</span>
+                <span class="metric"><strong>7</strong> pipeline steps</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">YAML</span>
+                <span class="tech-badge">SQLite</span>
+            </div>
+        </div>
+
+        <!-- AIReceptionist -->
+        <div class="project-card" data-category="business">
+            <div class="card-top">
+                <h3><span class="abbrev">AIReceptionist</span> AI Phone Receptionist</h3>
+                <span class="status-badge status-beta">Beta</span>
+            </div>
+            <p class="tagline">AI-powered phone receptionist that handles calls, schedules appointments, and integrates with CRM systems.</p>
+            <ul class="capabilities">
+                <li>Twilio voice integration with real-time speech-to-text processing</li>
+                <li>Ollama-powered conversation engine with business-specific training</li>
+                <li>CRM integrations for Clio (law firms) and Buildium (property management)</li>
+                <li>Interactive demo mode at /demo for client demonstrations</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>19</strong> modules</span>
+                <span class="metric"><strong>2.5K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">FastAPI</span>
+                <span class="tech-badge">Twilio</span>
+                <span class="tech-badge">Ollama</span>
+            </div>
+        </div>
+
+        <!-- SpecForge -->
+        <div class="project-card" data-category="infra">
+            <div class="card-top">
+                <h3><span class="abbrev">SpecForge</span> Spec-to-Code Pipeline</h3>
+                <span class="status-badge status-production">Production</span>
+            </div>
+            <p class="tagline">5-phase spec-first build pipeline with SHA-256 spec locking and cross-project intelligence hub.</p>
+            <ul class="capabilities">
+                <li>Guided spec creation from natural language requirements</li>
+                <li>SHA-256 spec freeze that prevents scope creep during builds</li>
+                <li>Cross-project intelligence hub that reads all 38+ projects for synergies</li>
+                <li>Verification phase that diffs final code against locked spec</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>2</strong> modules</span>
+                <span class="metric"><strong>1.9K</strong> LOC</span>
+                <span class="metric"><strong>5</strong> phases</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">SHA-256</span>
+                <span class="tech-badge">JSON Schema</span>
+            </div>
+        </div>
+
+        <!-- FocusGuard -->
+        <div class="project-card" data-category="ai">
+            <div class="card-top">
+                <h3><span class="abbrev">FocusGuard</span> ADHD Focus Assistant</h3>
+                <span class="status-badge status-active">Active</span>
+            </div>
+            <p class="tagline">Desktop focus guardian that detects distractions, blocks time-wasting sites, and nudges you back on task.</p>
+            <ul class="capabilities">
+                <li>Active window monitoring with distraction classification</li>
+                <li>Configurable block lists with scheduled focus/break cycles</li>
+                <li>Desktop GUI with session timers, streak tracking, and focus scoring</li>
+                <li>Integration with Claude Code ADHD hooks for cross-platform awareness</li>
+            </ul>
+            <div class="card-metrics">
+                <span class="metric"><strong>9</strong> modules</span>
+                <span class="metric"><strong>1.6K</strong> LOC</span>
+            </div>
+            <div class="tech-stack">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">CustomTkinter</span>
+                <span class="tech-badge">SQLite</span>
             </div>
         </div>
 
@@ -815,56 +1387,30 @@
             <a href="https://TiranMosko-ai-radar.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
         </div>
 
-        <!-- AgentRunner -->
-        <div class="project-card" data-category="ai">
+        <!-- AgentForge -->
+        <div class="project-card" data-category="infra">
             <div class="card-top">
-                <h3><span class="abbrev">AgentRunner</span> Autonomous Task Executor</h3>
+                <h3><span class="abbrev">AgentForge</span> Docker Agent Ecosystem</h3>
                 <span class="status-badge status-active">Active</span>
             </div>
-            <p class="tagline">Headless daemon that executes Claude Code tasks 24/7 with cost governance and priority queuing.</p>
+            <p class="tagline">Docker-based agent ecosystem with OpenHands, n8n, LiteLLM, and ShieldWall MCP bridge -- all free-tier.</p>
             <ul class="capabilities">
-                <li>Background task queue that runs AI coding tasks without human supervision</li>
-                <li>Cost governance with per-task and daily spending limits</li>
-                <li>Priority-based scheduling with dependency resolution between tasks</li>
-                <li>Automatic logging and result capture for post-execution review</li>
+                <li>OpenHands autonomous coding agent with NullClaw companion</li>
+                <li>n8n workflow automation for cross-service orchestration</li>
+                <li>LiteLLM proxy for unified API access across model providers</li>
+                <li>ShieldWall MCP bridge that extends Claude tools to containerized agents</li>
             </ul>
             <div class="card-metrics">
-                <span class="metric"><strong>21</strong> modules</span>
-                <span class="metric"><strong>4.7K</strong> LOC</span>
+                <span class="metric"><strong>4</strong> modules</span>
+                <span class="metric"><strong>831</strong> LOC</span>
+                <span class="metric"><strong>5</strong> containers</span>
             </div>
             <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Claude Code SDK</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">APScheduler</span>
-            </div>
-        </div>
-
-        <!-- CareerBuilder -->
-        <div class="project-card" data-category="business">
-            <div class="card-top">
-                <h3><span class="abbrev">CareerBuilder</span> AI Career Coach</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Personal career OS with AI resume generation, skills assessment, and 6-platform profile automation.</p>
-            <ul class="capabilities">
-                <li>AI-powered resume and cover letter generation tailored per job listing</li>
-                <li>Skills gap analysis with learning path recommendations</li>
-                <li>Automated profile content generation for 6 freelance platforms</li>
-                <li>Income tracking dashboard with target milestones and task management</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>10</strong> modules</span>
-                <span class="metric"><strong>3.9K</strong> LOC</span>
-                <span class="metric"><strong>6</strong> platforms</span>
-            </div>
-            <div class="tech-stack">
+                <span class="tech-badge">Docker Compose</span>
                 <span class="tech-badge">Python</span>
                 <span class="tech-badge">Flask</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">Ollama</span>
+                <span class="tech-badge">MCP Protocol</span>
             </div>
-            <a href="https://TiranMosko-career-builder.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
         </div>
 
         <!-- MailFinance -->
@@ -892,59 +1438,6 @@
             </div>
         </div>
 
-        <!-- MechAgent -->
-        <div class="project-card" data-category="ai">
-            <div class="card-top">
-                <h3><span class="abbrev">MechAgent</span> AI Mechanical Engineer</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Conversational CAD agent that designs mechanical parts from natural language specifications.</p>
-            <ul class="capabilities">
-                <li>Natural language to parametric CAD model generation</li>
-                <li>Material selection and stress analysis with safety factor calculations</li>
-                <li>Automated engineering drawings with GD&T annotations</li>
-                <li>Multi-format export (STEP, STL, DXF) for manufacturing and 3D printing</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>33</strong> modules</span>
-                <span class="metric"><strong>8.2K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">CadQuery</span>
-                <span class="tech-badge">Ollama</span>
-                <span class="tech-badge">FastAPI</span>
-            </div>
-        </div>
-
-        <!-- BusinessOS -->
-        <div class="project-card" data-category="business">
-            <div class="card-top">
-                <h3><span class="abbrev">BusinessOS</span> White-Label Business Platform</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Multi-tenant ordering system with 78 MCP tool integrations for any business type.</p>
-            <ul class="capabilities">
-                <li>White-label storefront with customizable branding per tenant</li>
-                <li>Full ordering workflow: catalog, cart, checkout, payment, fulfillment</li>
-                <li>78 MCP tool integrations for inventory, shipping, CRM, and analytics</li>
-                <li>Admin dashboard with multi-tenant management and revenue tracking</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>81</strong> modules</span>
-                <span class="metric"><strong>13.2K</strong> LOC</span>
-                <span class="metric"><strong>78</strong> MCP tools</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">FastAPI</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">MCP Protocol</span>
-                <span class="tech-badge">Jinja2</span>
-            </div>
-            <a href="https://TiranMosko-businessos.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
-        </div>
-
     </div>
 </section>
 
@@ -955,33 +1448,67 @@
     <div class="aios-section">
         <h2><span class="gradient">The AI-OS</span></h2>
         <p class="aios-description">
-            All of these projects are not isolated tools -- they form a unified operating system. 33 active projects connected through a shared event bus, governed by a 3-layer security firewall, automated by autonomous agents, and monitored by an AI intelligence engine. Every project can communicate with every other project through the MCP protocol, and the entire system is self-healing with watchdog processes and auto-recovery.
+            All of these projects are not isolated tools -- they form a unified operating system. 38+ active projects connected through the MCP protocol, governed by a multi-layer security firewall, automated by 16 autonomous agents, and monitored by an AI intelligence engine. Every project can communicate with every other project, and the entire system is self-healing with watchdog processes and auto-recovery.
         </p>
         <div class="aios-stats">
             <div class="aios-stat">
-                <div class="aios-stat-value">33</div>
+                <div class="aios-stat-value">38+</div>
                 <div class="aios-stat-label">Active Projects</div>
             </div>
             <div class="aios-stat">
-                <div class="aios-stat-value">54</div>
+                <div class="aios-stat-value">57</div>
                 <div class="aios-stat-label">MCP Servers</div>
             </div>
             <div class="aios-stat">
-                <div class="aios-stat-value">15</div>
+                <div class="aios-stat-value">16</div>
                 <div class="aios-stat-label">Custom Agents</div>
             </div>
             <div class="aios-stat">
-                <div class="aios-stat-value">7</div>
+                <div class="aios-stat-value">30</div>
                 <div class="aios-stat-label">Security Hooks</div>
             </div>
             <div class="aios-stat">
-                <div class="aios-stat-value">8</div>
-                <div class="aios-stat-label">Web Dashboards</div>
+                <div class="aios-stat-value">37</div>
+                <div class="aios-stat-label">Slash Commands</div>
             </div>
             <div class="aios-stat">
-                <div class="aios-stat-value">100K+</div>
+                <div class="aios-stat-value">180K+</div>
                 <div class="aios-stat-label">Lines of Code</div>
             </div>
+        </div>
+
+        <div class="complexity-breakdown">
+            <h3>Complexity Breakdown</h3>
+            <table class="complexity-table">
+                <thead>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Count</th>
+                        <th>Criteria</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="complexity-badge complexity-high">High</span></td>
+                        <td>4 projects</td>
+                        <td>10K+ LOC, multi-layer arch, GPU/multi-tenant</td>
+                        <td>QSDE (47K LOC, CUDA), RSSC (33K LOC, 10 workers), BusinessOS (12K LOC, multi-tenant), DevGuard (10K LOC, React+API)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="complexity-badge complexity-medium">Medium</span></td>
+                        <td>13 projects</td>
+                        <td>3K-10K LOC, multiple subsystems</td>
+                        <td>CodeShield (7.8K, AST diffing), MechAgent (8.2K, CAD engine), ShieldWall (6K, 3 defense layers), Overseer (4.6K, 10 sensors + 8 healers)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="complexity-badge complexity-focused">Focused</span></td>
+                        <td>8 projects</td>
+                        <td>Under 3K LOC, single-purpose</td>
+                        <td>PromptForge (3.1K, prompt gate), SpecForge (1.9K, spec pipeline), AIRadar (1.1K, intel scanner), AgentForge (831, Docker orchestration)</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </section>
@@ -992,7 +1519,7 @@
 <section id="products">
     <div class="section-header">
         <h2>Public Products</h2>
-        <p>Free to try. Premium features unlock after purchase — direct payment via Stripe (2.9% fee, no middleman).</p>
+        <p>Open source tools and premium products. Free demos on Hugging Face, source code on GitHub.</p>
     </div>
 
     <div class="products-grid">
@@ -1005,7 +1532,6 @@
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                     GitHub
                 </a>
-                <a href="https://TiranMosko-seo-audit.hf.space" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
             </div>
         </div>
 
@@ -1029,7 +1555,6 @@
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                     GitHub
                 </a>
-                <a href="https://TiranMosko-seo-audit.hf.space" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
             </div>
         </div>
 
@@ -1041,7 +1566,6 @@
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                     GitHub
                 </a>
-                <a href="https://TiranMosko-seo-audit.hf.space" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
             </div>
         </div>
 
@@ -1049,19 +1573,43 @@
             <h3>Claude Sandbox Guard</h3>
             <p class="product-desc">Shell hook system that intercepts dangerous commands before Claude Code can execute them. Protects your OS from AI mistakes.</p>
             <div class="product-buttons">
-                <a href="https://github.com/tiranmoskovitch-dev" target="_blank" rel="noopener" class="btn">
+                <a href="https://github.com/tiranmoskovitch-dev/claude-sandbox-guard" target="_blank" rel="noopener" class="btn">
                     <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                     GitHub
                 </a>
-                <a href="#products" target="_blank" rel="noopener" class="btn btn-primary">Buy on Whop</a>
             </div>
         </div>
 
         <div class="product-card">
-            <h3>MCP Starter Arsenal</h3>
-            <p class="product-desc">Pre-configured bundle of MCP servers, custom agents, slash commands, and keybindings for Claude Code power users.</p>
+            <h3>MCP Tools Collection</h3>
+            <p class="product-desc">50+ production-ready MCP servers for Claude Code. Database connectors, API bridges, browser automation, and more.</p>
             <div class="product-buttons">
-                <a href="#products" target="_blank" rel="noopener" class="btn btn-primary">Buy on Whop</a>
+                <a href="https://github.com/tiranmoskovitch-dev/MCP-Tools" target="_blank" rel="noopener" class="btn">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <h3>DevGuard</h3>
+            <p class="product-desc">AI development governance platform. Scans code for security, quality, and compliance issues with a React dashboard.</p>
+            <div class="product-buttons">
+                <a href="https://github.com/tiranmoskovitch-dev/DevGuard" target="_blank" rel="noopener" class="btn">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <h3>MCP API Bridge Lite</h3>
+            <p class="product-desc">Free REST API to MCP bridge. Expose any REST API as an MCP server for Claude Code with zero configuration.</p>
+            <div class="product-buttons">
+                <a href="https://github.com/tiranmoskovitch-dev/mcp-api-bridge-lite" target="_blank" rel="noopener" class="btn">
+                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                    GitHub
+                </a>
             </div>
         </div>
 
@@ -1100,11 +1648,11 @@
         });
     }, observerOptions);
 
-    // Observe all cards
-    document.querySelectorAll('.project-card, .product-card, .aios-section').forEach((el, i) => {
+    // Observe all cards and sections
+    document.querySelectorAll('.project-card, .product-card, .aios-section, .tier-header').forEach((el, i) => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(20px)';
-        el.style.transition = `opacity 0.5s ease ${i * 0.05}s, transform 0.5s ease ${i * 0.05}s`;
+        el.style.transition = `opacity 0.5s ease ${i * 0.04}s, transform 0.5s ease ${i * 0.04}s`;
         observer.observe(el);
     });
 
