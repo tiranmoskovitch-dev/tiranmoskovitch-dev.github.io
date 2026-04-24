@@ -1,1699 +1,343 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiran Moskovitch — AI Systems Architect</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        /* ── Reset & Base ─────────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --bg-primary: #0d1117;
-            --bg-secondary: #161b22;
-            --bg-card: #161b22;
-            --border: #30363d;
-            --border-hover: #484f58;
-            --text-primary: #e6edf3;
-            --text-secondary: #8b949e;
-            --text-muted: #6e7681;
-            --accent-blue: #58a6ff;
-            --accent-purple: #bc8cff;
-            --accent-amber: #d29922;
-            --accent-red: #f85149;
-            --accent-green: #3fb950;
-            --accent-teal: #39d353;
-            --accent-pink: #f778ba;
-            --accent-orange: #db6d28;
-            --glow-blue: rgba(88, 166, 255, 0.15);
-            --glow-purple: rgba(188, 140, 255, 0.15);
-            --glow-amber: rgba(210, 153, 34, 0.15);
-            --glow-red: rgba(248, 81, 73, 0.15);
-        }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a { color: var(--accent-blue); text-decoration: none; transition: color 0.2s; }
-        a:hover { color: var(--accent-purple); }
-
-        /* ── Scrollbar ────────────────────────────────────── */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-primary); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
-
-        /* ── Navigation ───────────────────────────────────── */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(13, 17, 23, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            padding: 0 2rem;
-        }
-
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 56px;
-        }
-
-        .nav-logo {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--text-primary);
-            letter-spacing: -0.02em;
-        }
-
-        .nav-logo span { color: var(--accent-purple); }
-
-        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover { color: var(--text-primary); }
-
-        /* ── Hero ─────────────────────────────────────────── */
-        .hero {
-            padding: 10rem 2rem 5rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(188, 140, 255, 0.06) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1.15;
-            margin-bottom: 1rem;
-        }
-
-        .hero h1 .gradient {
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero .subtitle {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            font-weight: 400;
-            line-height: 1.7;
-        }
-
-        .hero .bio {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            max-width: 650px;
-            margin: 0 auto 3rem;
-            line-height: 1.7;
-        }
-
-        .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-top: 0.25rem;
-        }
-
-        /* ── Section Layout ───────────────────────────────── */
-        section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-header h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.75rem;
-        }
-
-        .section-header p {
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 0.95rem;
-        }
-
-        .section-divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* ── Complexity Tier Headers ──────────────────────── */
-        .tier-header {
-            margin-top: 2.5rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .tier-header:first-of-type { margin-top: 0; }
-
-        .tier-header h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            white-space: nowrap;
-        }
-
-        .tier-header .tier-line {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--border), transparent);
-        }
-
-        .tier-desc {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            margin-bottom: 1.25rem;
-            line-height: 1.5;
-        }
-
-        .complexity-badge {
-            font-size: 0.65rem;
-            font-weight: 700;
-            padding: 0.15rem 0.5rem;
-            border-radius: 999px;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-left: 0.5rem;
-            vertical-align: middle;
-        }
-
-        .complexity-high { background: rgba(188, 140, 255, 0.15); color: var(--accent-purple); border: 1px solid rgba(188, 140, 255, 0.3); }
-        .complexity-medium { background: rgba(88, 166, 255, 0.15); color: var(--accent-blue); border: 1px solid rgba(88, 166, 255, 0.3); }
-        .complexity-focused { background: rgba(63, 185, 80, 0.15); color: var(--accent-green); border: 1px solid rgba(63, 185, 80, 0.3); }
-
-        /* ── Project Cards Grid ───────────────────────────── */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .project-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.75rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .project-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border-hover);
-        }
-
-        .project-card:hover::before { opacity: 1; }
-
-        /* Category color coding */
-        .project-card[data-category="trading"]::before { background: linear-gradient(90deg, var(--accent-amber), transparent); }
-        .project-card[data-category="trading"] { --cat-color: var(--accent-amber); --cat-glow: var(--glow-amber); }
-
-        .project-card[data-category="security"]::before { background: linear-gradient(90deg, var(--accent-red), transparent); }
-        .project-card[data-category="security"] { --cat-color: var(--accent-red); --cat-glow: var(--glow-red); }
-
-        .project-card[data-category="ai"]::before { background: linear-gradient(90deg, var(--accent-purple), transparent); }
-        .project-card[data-category="ai"] { --cat-color: var(--accent-purple); --cat-glow: var(--glow-purple); }
-
-        .project-card[data-category="business"]::before { background: linear-gradient(90deg, var(--accent-blue), transparent); }
-        .project-card[data-category="business"] { --cat-color: var(--accent-blue); --cat-glow: var(--glow-blue); }
-
-        .project-card[data-category="infra"]::before { background: linear-gradient(90deg, var(--accent-teal), transparent); }
-        .project-card[data-category="infra"] { --cat-color: var(--accent-teal); }
-
-        .card-top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 0.75rem;
-        }
-
-        .card-top h3 {
-            font-size: 1.15rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            color: var(--text-primary);
-        }
-
-        .card-top h3 .abbrev {
-            color: var(--cat-color, var(--accent-blue));
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85em;
-        }
-
-        .status-badge {
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 0.2rem 0.6rem;
-            border-radius: 999px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .status-production { background: rgba(63, 185, 80, 0.15); color: var(--accent-green); border: 1px solid rgba(63, 185, 80, 0.3); }
-        .status-active { background: rgba(88, 166, 255, 0.15); color: var(--accent-blue); border: 1px solid rgba(88, 166, 255, 0.3); }
-        .status-beta { background: rgba(210, 153, 34, 0.15); color: var(--accent-amber); border: 1px solid rgba(210, 153, 34, 0.3); }
-
-        .tagline {
-            font-size: 0.88rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .capabilities {
-            list-style: none;
-            margin-bottom: 1.25rem;
-        }
-
-        .capabilities li {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            padding: 0.3rem 0;
-            padding-left: 1.2rem;
-            position: relative;
-            line-height: 1.5;
-        }
-
-        .capabilities li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0.65rem;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--cat-color, var(--accent-blue));
-            opacity: 0.7;
-        }
-
-        .card-metrics {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .metric {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            background: rgba(110, 118, 129, 0.1);
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
-            border: 1px solid rgba(110, 118, 129, 0.15);
-        }
-
-        .metric strong {
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-        }
-
-        .tech-badge {
-            font-size: 0.7rem;
-            font-weight: 500;
-            padding: 0.2rem 0.5rem;
-            border-radius: 6px;
-            background: rgba(110, 118, 129, 0.1);
-            color: var(--text-muted);
-            border: 1px solid rgba(110, 118, 129, 0.1);
-        }
-
-        /* ── AI-OS Section ────────────────────────────────── */
-        .aios-section {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 3rem;
-            margin: 2rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .aios-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 30%, rgba(188, 140, 255, 0.04) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 70%, rgba(88, 166, 255, 0.04) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .aios-section h2 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .aios-section h2 .gradient {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .aios-description {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            max-width: 700px;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .aios-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            position: relative;
-        }
-
-        .aios-stat {
-            text-align: center;
-            padding: 1.25rem 1rem;
-            background: rgba(13, 17, 23, 0.5);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            transition: border-color 0.3s;
-        }
-
-        .aios-stat:hover { border-color: var(--border-hover); }
-
-        .aios-stat-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--accent-purple);
-        }
-
-        .aios-stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-top: 0.25rem;
-        }
-
-        /* ── Complexity breakdown table ───────────────────── */
-        .complexity-breakdown {
-            margin-top: 2rem;
-            position: relative;
-        }
-
-        .complexity-breakdown h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .complexity-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-
-        .complexity-table th {
-            text-align: left;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.72rem;
-            letter-spacing: 0.06em;
-        }
-
-        .complexity-table td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
-            color: var(--text-secondary);
-        }
-
-        .complexity-table tr:last-child td { border-bottom: none; }
-
-        /* ── Products Section ─────────────────────────────── */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.25rem;
-        }
-
-        .product-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .product-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-        }
-
-        .product-card h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-
-        .product-card .product-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .product-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.78rem;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-            background: rgba(88, 166, 255, 0.08);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            color: #fff;
-            border: none;
-        }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-            color: #fff;
-            transform: translateY(-1px);
-        }
-
-        .btn svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        /* ── Footer ───────────────────────────────────────── */
-        footer {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .footer-left {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover { color: var(--text-primary); }
-
-        /* ── Demo Links ──────────────────────────────────── */
-        .demo-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.78rem;
-            font-weight: 600;
-            padding: 0.45rem 0.9rem;
-            border-radius: 6px;
-            background: linear-gradient(135deg, var(--accent-green), #059669);
-            color: white;
-            text-decoration: none;
-            margin-top: 0.75rem;
-            transition: all 0.2s;
-        }
-
-        .demo-link:hover { opacity: 0.9; color: white; transform: translateY(-1px); }
-
-        .demo-link::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #bbf7d0; animation: pulse-dot 1.5s infinite; }
-
-        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        /* ── Animations ───────────────────────────────────── */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-in {
-            opacity: 0;
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-
-        /* ── Responsive ───────────────────────────────────── */
-        @media (max-width: 768px) {
-            .hero { padding: 8rem 1.5rem 3rem; }
-            .stats-bar { gap: 1.5rem; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .products-grid { grid-template-columns: 1fr; }
-            .aios-stats { grid-template-columns: repeat(2, 1fr); }
-            .nav-links { display: none; }
-            section { padding: 3rem 1.5rem; }
-            footer { flex-direction: column; text-align: center; }
-            .complexity-table { font-size: 0.78rem; }
-            .complexity-table th, .complexity-table td { padding: 0.5rem 0.6rem; }
-        }
-
-        @media (max-width: 480px) {
-            .aios-stats { grid-template-columns: 1fr; }
-            .aios-section { padding: 2rem 1.5rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinetra Labs AI — AI Automation. Built to Move.</title>
+<meta name="description" content="Kinetra Labs builds enterprise-grade AI automation systems, autonomous agents, and business intelligence pipelines.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07101d;--surface:#0c1025;--card:#0e1530;
+  --border:rgba(80,60,200,.14);--border-h:rgba(80,60,200,.4);
+  --text:#cce4ff;--muted:#5a6a9a;--dim:#3a4a7a;
+  --p1:#2060ff;--p2:#9040ff;
+  --grad:linear-gradient(90deg,#2060ff,#9040ff);
+  --grad135:linear-gradient(135deg,#2060ff,#9040ff);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(7,16,29,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:12px}
+.nav-logo-text{font-size:13px;font-weight:800;letter-spacing:1px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:28px}
+.nav-links a{font-size:12px;color:var(--muted);transition:color .2s;font-weight:500}
+.nav-links a:hover{color:var(--p1)}
+.nav-cta{font-size:12px;padding:8px 18px;border-radius:6px;background:rgba(32,96,255,.12);border:1px solid rgba(32,96,255,.3);color:var(--p1);font-weight:600;transition:background .2s,border-color .2s}
+.nav-cta:hover{background:rgba(32,96,255,.22);border-color:rgba(32,96,255,.5)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 48px 80px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(60,40,200,.18) 0%,transparent 70%);pointer-events:none}
+.hero-content{max-width:760px;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:rgba(80,60,200,.08);border:1px solid var(--border);border-radius:20px;padding:6px 16px;margin-bottom:28px}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--grad135)}
+.hero h1{font-size:clamp(42px,6vw,72px);font-weight:900;line-height:1.05;letter-spacing:-1.5px;margin-bottom:8px}
+.hero h1 .k-word{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero h1 .labs-word{font-weight:200;letter-spacing:6px;opacity:.8}
+.hero-sub{font-size:clamp(14px,2vw,18px);color:var(--muted);margin-top:20px;margin-bottom:36px;font-weight:400}
+.hero-sub strong{color:var(--text);font-weight:600}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:13px 28px;border-radius:8px;background:var(--grad135);color:#fff;font-weight:700;font-size:14px;transition:opacity .2s,transform .15s;display:inline-block}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px)}
+.btn-secondary{padding:12px 28px;border-radius:8px;border:1px solid var(--border-h);color:var(--text);font-weight:600;font-size:14px;transition:background .2s;display:inline-block}
+.btn-secondary:hover{background:rgba(80,60,200,.08)}
+.hero-stats{display:flex;gap:40px;justify-content:center;margin-top:60px;flex-wrap:wrap}
+.stat-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.stat-num{font-size:28px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+
+/* ── SECTIONS ── */
+section{padding:90px 48px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.section-title{font-size:clamp(26px,4vw,38px);font-weight:800;line-height:1.15;margin-bottom:14px}
+.section-title .grad{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.section-desc{font-size:15px;color:var(--muted);max-width:540px;line-height:1.7}
+divider{display:block;height:1px;background:var(--border);margin:0 48px}
+
+/* ── SERVICES ── */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.svc-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color .2s,background .2s}
+.svc-card:hover{border-color:var(--border-h);background:#111830}
+.svc-icon{width:44px;height:44px;border-radius:10px;background:rgba(32,96,255,.1);border:1px solid rgba(32,96,255,.2);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:20px}
+.svc-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.svc-desc{font-size:13px;color:var(--muted);line-height:1.65}
+.svc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.tag{font-size:10px;padding:3px 9px;border-radius:4px;background:rgba(80,60,200,.1);border:1px solid rgba(80,60,200,.15);color:var(--dim)}
+
+/* ── PROJECTS ── */
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:48px}
+.proj-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s;cursor:pointer}
+.proj-card:hover{border-color:var(--border-h)}
+.proj-header{display:flex;justify-content:space-between;align-items:flex-start}
+.proj-name{font-size:15px;font-weight:700}
+.proj-status{font-size:9px;padding:3px 8px;border-radius:4px;font-weight:700;letter-spacing:.5px}
+.status-live{background:rgba(30,200,80,.12);color:#3fb950;border:1px solid rgba(30,200,80,.2)}
+.status-beta{background:rgba(32,96,255,.1);color:var(--p1);border:1px solid rgba(32,96,255,.2)}
+.proj-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.proj-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.proj-tag{font-size:10px;color:var(--dim);font-family:'JetBrains Mono',monospace}
+
+/* ── ABOUT ── */
+.about-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.about-logo{display:flex;justify-content:center}
+.about-text .label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.about-text h2{font-size:clamp(24px,3.5vw,36px);font-weight:800;line-height:1.2;margin-bottom:18px}
+.about-text p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:12px}
+.about-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.pill{font-size:11px;padding:5px 12px;border-radius:20px;background:rgba(80,60,200,.08);border:1px solid var(--border);color:var(--muted)}
+
+/* ── CTA ── */
+.cta-band{background:linear-gradient(135deg,rgba(14,22,48,1),rgba(20,10,50,1));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 48px;text-align:center}
+.cta-band h2{font-size:clamp(26px,4vw,42px);font-weight:800;margin-bottom:14px}
+.cta-band h2 span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cta-band p{color:var(--muted);font-size:15px;margin-bottom:28px}
+
+/* ── FOOTER ── */
+footer{padding:36px 48px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;color:var(--dim);font-size:12px}
+.footer-logo{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800;letter-spacing:1px}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero-content{animation:fadeUp .7s ease both}
+
+@media(max-width:768px){
+  nav{padding:14px 20px}.hero{padding:100px 20px 60px}
+  .services-grid{grid-template-columns:1fr}
+  .proj-grid{grid-template-columns:1fr}
+  .about-inner{grid-template-columns:1fr;gap:32px}
+  section{padding:60px 20px}divider{margin:0 20px}
+  .hero-stats{gap:24px}.nav-links{display:none}
+}
+</style>
 </head>
 <body>
 
-<!-- ── Navigation ──────────────────────────────────────── -->
+<!-- NAV -->
 <nav>
-    <div class="nav-inner">
-        <div class="nav-logo">tiran<span>.dev</span></div>
-        <div class="nav-links">
-            <a href="#projects">Projects</a>
-            <a href="#architecture">Architecture</a>
-            <a href="#aios">The AI-OS</a>
-            <a href="#products">Products</a>
-            <a href="https://github.com/tiranmoskovitch-dev" target="_blank" rel="noopener">GitHub</a>
-        </div>
-    </div>
+  <div class="nav-logo">
+    <svg width="32" height="32" viewBox="0 0 100 100">
+      <defs>
+        <linearGradient id="nb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1030a0"/><stop offset="100%" stop-color="#1840c8"/></linearGradient>
+        <linearGradient id="nk" x1="0.1" y1="0.95" x2="0.9" y2="0.05"><stop offset="0%" stop-color="#2550d8"/><stop offset="100%" stop-color="#a030f0"/></linearGradient>
+        <linearGradient id="nf" x1="0.1" y1="0.95" x2="0.9" y2="0.05"><stop offset="0%" stop-color="#1848e0"/><stop offset="100%" stop-color="#3068f8"/></linearGradient>
+        <linearGradient id="nl" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0%" stop-color="#0e2090"/><stop offset="100%" stop-color="#1838c0"/></linearGradient>
+      </defs>
+      <path d="M17 5 C22 4 29 5 31 9 C32 22 32 36 32 46 C32 57 31 72 29 88 C24 92 17 90 17 87 Z" fill="url(#nb)"/>
+      <path d="M31 36 C46 26 63 14 81 3 C83 1 86 3 84 8 C66 17 48 30 33 44 Z" fill="url(#nk)"/>
+      <path d="M31 40 C45 32 58 22 73 11 C75 9 78 11 76 15 C61 25 47 36 32 48 Z" fill="url(#nf)"/>
+      <path d="M31 44 Q53 30 74 13" stroke="rgba(200,220,255,0.7)" stroke-width="1" fill="none" stroke-linecap="round"/>
+      <path d="M31 50 C43 53 62 64 79 84 C81 86 79 89 76 87 C57 69 39 58 29 53 Z" fill="url(#nl)"/>
+    </svg>
+    <span class="nav-logo-text">KINETRA LABS</span>
+  </div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#projects">Projects</a>
+    <a href="#about">About</a>
+  </div>
+  <a href="mailto:tiran.moskovitch@gmail.com" class="nav-cta">Get in Touch</a>
 </nav>
 
-<!-- ── Hero ─────────────────────────────────────────────── -->
-<header class="hero">
-    <h1 class="animate-in">Tiran Moskovitch<br><span class="gradient">AI Systems Architect</span></h1>
-    <p class="subtitle animate-in delay-1">Building autonomous AI systems that monitor, trade, learn, and generate revenue.</p>
-    <p class="bio animate-in delay-2">Product Support Engineer by day, AI-OS builder by night. A self-taught systems builder who architects interconnected AI infrastructure -- from autonomous trading engines and security firewalls to career coaches and mechanical design agents -- all governed by a unified security layer and orchestrated by autonomous agents.</p>
-    <div class="stats-bar animate-in delay-3">
-        <div class="stat-item">
-            <div class="stat-value">38+</div>
-            <div class="stat-label">Active Projects</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">57</div>
-            <div class="stat-label">MCP Servers</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">180K+</div>
-            <div class="stat-label">Lines of Code</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">16</div>
-            <div class="stat-label">Custom Agents</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-value">30</div>
-            <div class="stat-label">Security Hooks</div>
-        </div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="hero-badge-dot"></span>AI Automation Studio</div>
+
+    <!-- Large K Mark -->
+    <div style="margin-bottom:28px;display:flex;justify-content:center">
+      <svg width="130" height="130" viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="hb" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1030a0"/><stop offset="100%" stop-color="#1840c8"/></linearGradient>
+          <linearGradient id="hk" x1="0.1" y1="0.95" x2="0.9" y2="0.05"><stop offset="0%" stop-color="#2550d8"/><stop offset="100%" stop-color="#a030f0"/></linearGradient>
+          <linearGradient id="hf" x1="0.1" y1="0.95" x2="0.9" y2="0.05"><stop offset="0%" stop-color="#1848e0"/><stop offset="100%" stop-color="#3068f8"/></linearGradient>
+          <linearGradient id="hl" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0%" stop-color="#0e2090"/><stop offset="100%" stop-color="#1838c0"/></linearGradient>
+          <filter id="hglow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse cx="50" cy="48" rx="36" ry="34" fill="rgba(60,40,200,0.15)" filter="url(#hglow)"/>
+        <path d="M17 5 C22 4 29 5 31 9 C32 22 32 36 32 46 C32 57 31 72 29 88 C24 92 17 90 17 87 Z" fill="url(#hb)"/>
+        <path d="M31 36 C46 26 63 14 81 3 C83 1 86 3 84 8 C66 17 48 30 33 44 Z" fill="url(#hk)"/>
+        <path d="M31 40 C45 32 58 22 73 11 C75 9 78 11 76 15 C61 25 47 36 32 48 Z" fill="url(#hf)"/>
+        <path d="M31 44 Q53 30 74 13" stroke="rgba(200,225,255,0.75)" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <path d="M31 50 C43 53 62 64 79 84 C81 86 79 89 76 87 C57 69 39 58 29 53 Z" fill="url(#hl)"/>
+      </svg>
     </div>
-</header>
 
-<div class="section-divider"></div>
+    <h1><span class="k-word">KINETRA</span> <span class="labs-word">LABS</span></h1>
+    <p class="hero-sub">AI Automation. <strong>Built to Move.</strong></p>
+    <p style="color:var(--muted);font-size:15px;max-width:520px;margin:0 auto 36px;line-height:1.7">
+      We build autonomous AI agents, intelligent automation systems, and data pipelines
+      that handle real business workloads — so you don&rsquo;t have to.
+    </p>
+    <div class="hero-btns">
+      <a href="#services" class="btn-primary">Explore Services</a>
+      <a href="mailto:tiran.moskovitch@gmail.com" class="btn-secondary">Start a Project</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">80+</span><span class="stat-label">Active Projects</span></div>
+      <div class="stat-item"><span class="stat-num">57</span><span class="stat-label">MCP Tools</span></div>
+      <div class="stat-item"><span class="stat-num">318</span><span class="stat-label">Trading Symbols</span></div>
+      <div class="stat-item"><span class="stat-num">24/7</span><span class="stat-label">Agent Runtime</span></div>
+    </div>
+  </div>
+</div>
 
-<!-- ── Projects ─────────────────────────────────────────── -->
+<divider></divider>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-tag">What We Build</div>
+    <h2 class="section-title">Lab-grade AI. <span class="grad">Real-world results.</span></h2>
+    <p class="section-desc">Every system is engineered for production — not demos. We build what actually runs at scale.</p>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-icon">&#x1F916;</div>
+        <div class="svc-title">Autonomous AI Agents</div>
+        <div class="svc-desc">Multi-agent systems that operate independently — gathering data, making decisions, and executing tasks without constant human input.</div>
+        <div class="svc-tags"><span class="tag">Claude API</span><span class="tag">AgentRunner</span><span class="tag">MCP Tools</span><span class="tag">Ollama</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">&#x26A1;</div>
+        <div class="svc-title">Business Automation</div>
+        <div class="svc-desc">Workflows that eliminate repetitive work — from lead processing and CRM updates to report generation and alert systems.</div>
+        <div class="svc-tags"><span class="tag">FastAPI</span><span class="tag">n8n</span><span class="tag">SQLite</span><span class="tag">Zapier</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">&#x1F4CA;</div>
+        <div class="svc-title">Trading & Market Intelligence</div>
+        <div class="svc-desc">Algorithmic strategy engines with genetic algorithms, real-time signal generation, and multi-broker execution layers.</div>
+        <div class="svc-tags"><span class="tag">IBKR</span><span class="tag">Coinbase</span><span class="tag">Python</span><span class="tag">CUDA</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">&#x1F6E1;</div>
+        <div class="svc-title">AI Security & Governance</div>
+        <div class="svc-desc">Multi-layer security frameworks for AI deployments — prompt firewall, code quality gates, anomaly detection, and incident response.</div>
+        <div class="svc-tags"><span class="tag">ShieldOS</span><span class="tag">ShieldWall</span><span class="tag">DevGuard</span><span class="tag">TriGuard</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">&#x1F527;</div>
+        <div class="svc-title">MCP Tool Development</div>
+        <div class="svc-desc">Custom Model Context Protocol servers that connect Claude and other LLMs directly to your internal systems, APIs, and databases.</div>
+        <div class="svc-tags"><span class="tag">MCP</span><span class="tag">Claude Code</span><span class="tag">TypeScript</span><span class="tag">Python</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon">&#x1F9E0;</div>
+        <div class="svc-title">AI Dashboards & Analytics</div>
+        <div class="svc-desc">Intelligence hubs that surface the right data at the right time — live market feeds, business KPIs, and AI agent status in one place.</div>
+        <div class="svc-tags"><span class="tag">React</span><span class="tag">FastAPI</span><span class="tag">DuckDB</span><span class="tag">Jinja2</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<divider></divider>
+
+<!-- PROJECTS -->
 <section id="projects">
-    <div class="section-header">
-        <h2>Projects</h2>
-        <p>Private systems built from scratch. Each runs autonomously as part of a larger AI operating system. Grouped by complexity -- from enterprise-grade multi-layer platforms to focused single-purpose tools.</p>
+  <div class="section-inner">
+    <div class="section-tag">Live Systems</div>
+    <h2 class="section-title">Built and <span class="grad">running in production.</span></h2>
+    <p class="section-desc">A selection of active projects from the Kinetra Labs stack.</p>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-header"><div class="proj-name">QSDE — Quant Strategy Engine</div><span class="proj-status status-live">LIVE</span></div>
+        <div class="proj-desc">Autonomous strategy breeding engine using genetic algorithms. 318 symbols, 58K+ strategies, 53 gene types. Multi-broker execution across IBKR, Coinbase, Gemini, Kraken, and Robinhood.</div>
+        <div class="proj-meta"><span class="proj-tag">Python</span><span class="proj-tag">FastAPI</span><span class="proj-tag">CUDA / RTX 4050</span><span class="proj-tag">port 8888</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-header"><div class="proj-name">ShieldOS — AI Security Platform</div><span class="proj-status status-live">LIVE</span></div>
+        <div class="proj-desc">Consolidated AI governance platform: 3-layer firewall, 38+ security checks, DuckDB anomaly detection, ML threat analysis, and real-time incident response dashboard.</div>
+        <div class="proj-meta"><span class="proj-tag">Python</span><span class="proj-tag">Ollama</span><span class="proj-tag">DuckDB</span><span class="proj-tag">port 7777</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-header"><div class="proj-name">MCP-Tools — 57 Claude Integrations</div><span class="proj-status status-live">LIVE</span></div>
+        <div class="proj-desc">57 Model Context Protocol server products enabling Claude to interact with external systems. Each ships with full test coverage, pyproject.toml packaging, and Whop marketplace distribution.</div>
+        <div class="proj-meta"><span class="proj-tag">MCP</span><span class="proj-tag">TypeScript</span><span class="proj-tag">Claude Code</span><span class="proj-tag">Whop</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-header"><div class="proj-name">AgentForge — Agent Ecosystem</div><span class="proj-status status-beta">BETA</span></div>
+        <div class="proj-desc">Docker-based autonomous agent infrastructure: OpenHands + NullClaw + n8n + LiteLLM + Portainer. ShieldWall MCP Bridge enables Claude tools to route through the entire ecosystem.</div>
+        <div class="proj-meta"><span class="proj-tag">Docker</span><span class="proj-tag">OpenHands</span><span class="proj-tag">n8n</span><span class="proj-tag">port 7791</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-header"><div class="proj-name">AIRadar — Intelligence Scanner</div><span class="proj-status status-live">LIVE</span></div>
+        <div class="proj-desc">24-source AI news aggregator with Ollama-powered analysis. Scans every 30 minutes, correlates with active projects, and surfaces derivative insights for strategic decisions.</div>
+        <div class="proj-meta"><span class="proj-tag">FastAPI</span><span class="proj-tag">Ollama</span><span class="proj-tag">llama3.1</span><span class="proj-tag">port 7785</span></div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-header"><div class="proj-name">ConvoMind — Conversation AI</div><span class="proj-status status-beta">BETA</span></div>
+        <div class="proj-desc">3-layer conversation intelligence system: reads session transcripts, auto-generates contextual replies, and learns user communication patterns via Ollama ML.</div>
+        <div class="proj-meta"><span class="proj-tag">Python</span><span class="proj-tag">Ollama</span><span class="proj-tag">qwen2.5</span><span class="proj-tag">SQLite</span></div>
+      </div>
     </div>
-
-    <!-- ── HIGH COMPLEXITY ────────────────────────────── -->
-    <div class="tier-header">
-        <h3><span class="complexity-badge complexity-high">High</span> Enterprise-Grade Systems</h3>
-        <div class="tier-line"></div>
-    </div>
-    <p class="tier-desc">10K+ LOC, multi-layer architectures, GPU acceleration, autonomous workers, multi-tenant designs. These are full platforms with dozens of subsystems operating independently.</p>
-
-    <div class="projects-grid">
-
-        <!-- QSDE -->
-        <div class="project-card" data-category="trading">
-            <div class="card-top">
-                <h3><span class="abbrev">QSDE</span> Quantitative Strategy Discovery Engine</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">AI-powered trading platform that discovers, backtests, and executes strategies autonomously using genetic algorithms across 318 symbols.</p>
-            <ul class="capabilities">
-                <li>Autonomous strategy discovery and validation through evolutionary optimization with 53 gene types</li>
-                <li>GPU-accelerated backtesting (RTX 4050 / CuPy) with slippage modeling and commission simulation</li>
-                <li>Multi-broker execution layer (IBKR, Coinbase, Gemini, Kraken, Robinhood) with paper and live modes</li>
-                <li>ML model serving for real-time prediction and regime classification</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>148</strong> modules</span>
-                <span class="metric"><strong>47.3K</strong> LOC</span>
-                <span class="metric"><strong>58K+</strong> strategies tested</span>
-                <span class="metric"><strong>318</strong> symbols</span>
-                <span class="metric"><strong>53</strong> gene types</span>
-                <span class="metric"><strong>5</strong> brokers</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">CuPy / CUDA</span>
-                <span class="tech-badge">XGBoost</span>
-                <span class="tech-badge">FastAPI</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">yfinance</span>
-            </div>
-        </div>
-
-        <!-- RSSC -->
-        <div class="project-card" data-category="trading">
-            <div class="card-top">
-                <h3><span class="abbrev">RSSC</span> Research &amp; Strategy Scanner Center</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">24/7 market research daemon that scans 499 assets, detects regime shifts, and surfaces trade opportunities in real time.</p>
-            <ul class="capabilities">
-                <li>10 autonomous workers running on staggered schedules with auto-recovery</li>
-                <li>Multi-stage strategy pipeline: discovery, backtesting, validation, paper trading, live</li>
-                <li>Regime classification engine with voting across multiple mathematical models</li>
-                <li>210-feature system with 9-page live dashboard, morning market briefings, and trade suggestions</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>99</strong> modules</span>
-                <span class="metric"><strong>33.4K</strong> LOC</span>
-                <span class="metric"><strong>499</strong> assets tracked</span>
-                <span class="metric"><strong>210</strong> features</span>
-                <span class="metric"><strong>53+</strong> strategies</span>
-                <span class="metric"><strong>10</strong> data feeds</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Flask</span>
-                <span class="tech-badge">APScheduler</span>
-                <span class="tech-badge">SQLite / WAL</span>
-                <span class="tech-badge">Parquet</span>
-                <span class="tech-badge">yfinance</span>
-                <span class="tech-badge">Finnhub</span>
-            </div>
-        </div>
-
-        <!-- BusinessOS -->
-        <div class="project-card" data-category="business">
-            <div class="card-top">
-                <h3><span class="abbrev">BusinessOS</span> White-Label Business Platform</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Multi-tenant ordering system with 78 MCP tool integrations for any business type.</p>
-            <ul class="capabilities">
-                <li>White-label storefront with customizable branding per tenant</li>
-                <li>Full ordering workflow: catalog, cart, checkout, payment, fulfillment</li>
-                <li>78 MCP tool integrations for inventory, shipping, CRM, and analytics</li>
-                <li>Admin dashboard with multi-tenant management and revenue tracking</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>76</strong> modules</span>
-                <span class="metric"><strong>12.2K</strong> LOC</span>
-                <span class="metric"><strong>78</strong> MCP tools</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">FastAPI</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">MCP Protocol</span>
-                <span class="tech-badge">Jinja2</span>
-            </div>
-            <a href="https://TiranMosko-businessos.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
-        </div>
-
-        <!-- DevGuard -->
-        <div class="project-card" data-category="security">
-            <div class="card-top">
-                <h3><span class="abbrev">DevGuard</span> AI Development Governance</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">Code quality inspector and governance platform that scans every project for security, quality, and compliance issues.</p>
-            <ul class="capabilities">
-                <li>Real-time code scanning via Claude Code hooks on every file edit</li>
-                <li>Multi-category analysis: security vulnerabilities, code smells, dependency risks</li>
-                <li>React-based dashboard with project-level scoring and historical trends</li>
-                <li>CLI entry point with pip-installable package for cross-project use</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>31</strong> modules</span>
-                <span class="metric"><strong>10.1K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">FastAPI</span>
-                <span class="tech-badge">React</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">Ollama</span>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- ── MEDIUM COMPLEXITY ──────────────────────────── -->
-    <div class="tier-header">
-        <h3><span class="complexity-badge complexity-medium">Medium</span> Multi-System Platforms</h3>
-        <div class="tier-line"></div>
-    </div>
-    <p class="tier-desc">3K-10K LOC, multiple integrated subsystems, real-time processing, autonomous decision-making. Full-featured applications with sophisticated internal architectures.</p>
-
-    <div class="projects-grid">
-
-        <!-- ShieldWall -->
-        <div class="project-card" data-category="security">
-            <div class="card-top">
-                <h3><span class="abbrev">ShieldWall</span> AI Governance Firewall</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">3-layer autonomous defense system that blocks AI misuse, verifies integrity, and kills compromised processes.</p>
-            <ul class="capabilities">
-                <li>Real-time command interception with 65+ threat pattern categories</li>
-                <li>SHA256 integrity verification across all protected project files</li>
-                <li>Independent watchdog process that monitors and auto-recovers the entire stack</li>
-                <li>Compliance-aligned with NIST AI RMF, OWASP LLM Top 10, and EU AI Act</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>29</strong> modules</span>
-                <span class="metric"><strong>6K</strong> LOC</span>
-                <span class="metric"><strong>3</strong> defense layers</span>
-                <span class="metric"><strong>65+</strong> threat patterns</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Node.js</span>
-                <span class="tech-badge">SHA256</span>
-                <span class="tech-badge">Claude Code Hooks</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-        <!-- ShieldOS -->
-        <div class="project-card" data-category="security">
-            <div class="card-top">
-                <h3><span class="abbrev">ShieldOS</span> Unified Security Intelligence</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">CLI-driven security scanner with AI autopilot, quality gates, and cross-project threat management.</p>
-            <ul class="capabilities">
-                <li>Consolidated security scanning across all 38+ projects from a single interface</li>
-                <li>AI autopilot mode that autonomously remediates common vulnerabilities</li>
-                <li>Quality gate enforcement -- blocks deployments that fail security checks</li>
-                <li>Project-level risk scoring with historical trend tracking</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>38</strong> modules</span>
-                <span class="metric"><strong>5.1K</strong> LOC</span>
-                <span class="metric"><strong>38+</strong> projects scanned</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Rich CLI</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">Ollama</span>
-            </div>
-        </div>
-
-        <!-- MechAgent -->
-        <div class="project-card" data-category="ai">
-            <div class="card-top">
-                <h3><span class="abbrev">MechAgent</span> AI Mechanical Engineer</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Conversational CAD agent that designs mechanical parts from natural language specifications.</p>
-            <ul class="capabilities">
-                <li>Natural language to parametric CAD model generation</li>
-                <li>Material selection and stress analysis with safety factor calculations</li>
-                <li>Automated engineering drawings with GD&T annotations</li>
-                <li>Multi-format export (STEP, STL, DXF) for manufacturing and 3D printing</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>33</strong> modules</span>
-                <span class="metric"><strong>8.2K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">CadQuery</span>
-                <span class="tech-badge">Ollama</span>
-                <span class="tech-badge">FastAPI</span>
-            </div>
-        </div>
-
-        <!-- CodeShield -->
-        <div class="project-card" data-category="security">
-            <div class="card-top">
-                <h3><span class="abbrev">CodeShield</span> AI Regression Guard</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">7-layer regression prevention system that detects and blocks function removals, silent overwrites, and code drift in real time.</p>
-            <ul class="capabilities">
-                <li>Zero-tolerance function removal detection via AST diffing on every edit</li>
-                <li>Git pre-commit hook that blocks regressions before they reach the repo</li>
-                <li>Cross-project installation -- protects 5 critical projects simultaneously</li>
-                <li>Baseline snapshots with automatic drift detection and alerting</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>39</strong> modules</span>
-                <span class="metric"><strong>7.8K</strong> LOC</span>
-                <span class="metric"><strong>7</strong> guard layers</span>
-                <span class="metric"><strong>5</strong> projects protected</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">AST</span>
-                <span class="tech-badge">Git Hooks</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-        <!-- ClipForge -->
-        <div class="project-card" data-category="business">
-            <div class="card-top">
-                <h3><span class="abbrev">ClipForge</span> Mobile Video Editor</h3>
-                <span class="status-badge status-beta">Beta</span>
-            </div>
-            <p class="tagline">Android-first mobile video editor with AI-powered effects, built with React Native and FFmpeg.</p>
-            <ul class="capabilities">
-                <li>Timeline-based video editing with trim, split, and merge operations</li>
-                <li>AI-powered effects including auto-captions, background removal, and style transfer</li>
-                <li>Hardware-accelerated rendering via FFmpeg with real-time preview</li>
-                <li>Freemium model with APK built and ready for Play Store submission</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>27</strong> modules</span>
-                <span class="metric"><strong>5.5K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">React Native</span>
-                <span class="tech-badge">Expo</span>
-                <span class="tech-badge">FFmpeg</span>
-                <span class="tech-badge">TypeScript</span>
-            </div>
-        </div>
-
-        <!-- Overseer -->
-        <div class="project-card" data-category="infra">
-            <div class="card-top">
-                <h3><span class="abbrev">Overseer</span> Autonomous SRE Agent</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Self-healing infrastructure agent with 10 sensors and 8 healers that monitors, triages, and auto-fixes system issues.</p>
-            <ul class="capabilities">
-                <li>10 sensor types: port health, disk, memory, process, Docker, API latency, log errors</li>
-                <li>Ollama-powered triage that classifies severity and picks the right healer</li>
-                <li>8 auto-heal actions: restart services, clear caches, kill zombies, recycle Docker</li>
-                <li>Escalation to Claude CLI for complex fixes that healers can't resolve</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>41</strong> modules</span>
-                <span class="metric"><strong>4.6K</strong> LOC</span>
-                <span class="metric"><strong>10</strong> sensors</span>
-                <span class="metric"><strong>8</strong> healers</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Ollama</span>
-                <span class="tech-badge">Docker SDK</span>
-                <span class="tech-badge">Claude CLI</span>
-            </div>
-        </div>
-
-        <!-- AgentRunner -->
-        <div class="project-card" data-category="ai">
-            <div class="card-top">
-                <h3><span class="abbrev">AgentRunner</span> Autonomous Task Executor</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Headless daemon that executes Claude Code tasks 24/7 with cost governance and priority queuing.</p>
-            <ul class="capabilities">
-                <li>Background task queue that runs AI coding tasks without human supervision</li>
-                <li>Cost governance with per-task and daily spending limits ($50/day cap)</li>
-                <li>Priority-based scheduling with dependency resolution between tasks</li>
-                <li>Automatic logging and result capture for post-execution review</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>7</strong> modules</span>
-                <span class="metric"><strong>4K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Claude Code SDK</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">APScheduler</span>
-            </div>
-        </div>
-
-        <!-- ReleaseGrade -->
-        <div class="project-card" data-category="infra">
-            <div class="card-top">
-                <h3><span class="abbrev">ReleaseGrade</span> Project Quality Auditor</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">Automated grading system that audits every project on every code change, assigning A-F letter grades with fix queues.</p>
-            <ul class="capabilities">
-                <li>Static analysis across security, code quality, documentation, and test coverage</li>
-                <li>Letter grade system (A-F) with blocking enforcement -- C or below blocks delivery</li>
-                <li>Fix queue dashboard that prioritizes and tracks remediation across all projects</li>
-                <li>Integrated into every build cycle via mandatory post-edit hook</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>31</strong> modules</span>
-                <span class="metric"><strong>4.1K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">FastAPI</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-        <!-- SmartTabs -->
-        <div class="project-card" data-category="ai">
-            <div class="card-top">
-                <h3><span class="abbrev">SmartTabs</span> AI Browser Resource Manager</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">MCP-powered browser extension that auto-groups, suspends, and restores tabs based on context and resource usage.</p>
-            <ul class="capabilities">
-                <li>AI-powered tab grouping by project context and topic clustering</li>
-                <li>Memory pressure detection with automatic tab suspension and recovery</li>
-                <li>MCP resource server exposing tab state to Claude Code sessions</li>
-                <li>Session snapshots with cross-device sync and restoration</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>20</strong> modules</span>
-                <span class="metric"><strong>4.1K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">MCP Protocol</span>
-                <span class="tech-badge">Chrome Extension</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-        <!-- NetGuard -->
-        <div class="project-card" data-category="security">
-            <div class="card-top">
-                <h3><span class="abbrev">NetGuard</span> Network Security Monitor</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Network traffic analyzer and intrusion detection system with real-time alerting and threat visualization.</p>
-            <ul class="capabilities">
-                <li>Packet-level traffic analysis with protocol dissection and anomaly scoring</li>
-                <li>Rule-based intrusion detection with customizable threat signatures</li>
-                <li>Real-time dashboard with traffic graphs, geo-mapping, and alert feed</li>
-                <li>Automated blocking and quarantine for detected threats</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>34</strong> modules</span>
-                <span class="metric"><strong>3.8K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Flask</span>
-                <span class="tech-badge">Scapy</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-        <!-- CareerBuilder -->
-        <div class="project-card" data-category="business">
-            <div class="card-top">
-                <h3><span class="abbrev">CareerBuilder</span> AI Career Coach</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Personal career OS with AI resume generation, skills assessment, and 6-platform profile automation.</p>
-            <ul class="capabilities">
-                <li>AI-powered resume and cover letter generation tailored per job listing</li>
-                <li>Skills gap analysis with learning path recommendations</li>
-                <li>Automated profile content generation for 6 freelance platforms</li>
-                <li>Income tracking dashboard with target milestones and task management</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>8</strong> modules</span>
-                <span class="metric"><strong>3.7K</strong> LOC</span>
-                <span class="metric"><strong>6</strong> platforms</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Flask</span>
-                <span class="tech-badge">SQLite</span>
-                <span class="tech-badge">Ollama</span>
-            </div>
-            <a href="https://TiranMosko-career-builder.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
-        </div>
-
-        <!-- LearningHelper -->
-        <div class="project-card" data-category="ai">
-            <div class="card-top">
-                <h3><span class="abbrev">LearningHelper</span> AI Learning Assistant</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Personalized AI tutor that generates quizzes, tracks knowledge gaps, and adapts difficulty based on performance.</p>
-            <ul class="capabilities">
-                <li>Adaptive quiz generation from uploaded materials with spaced repetition</li>
-                <li>Knowledge gap detection and targeted remediation suggestions</li>
-                <li>Multi-format content support: PDFs, web pages, code repositories</li>
-                <li>Progress tracking dashboard with mastery scores per topic</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>36</strong> modules</span>
-                <span class="metric"><strong>3.6K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">FastAPI</span>
-                <span class="tech-badge">Ollama</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-        <!-- ProjectCommandCenter -->
-        <div class="project-card" data-category="infra">
-            <div class="card-top">
-                <h3><span class="abbrev">PCC</span> Project Command Center</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">Unified dashboard that monitors all 38+ projects with live port checks, git status, and health scoring.</p>
-            <ul class="capabilities">
-                <li>Auto-starts on every Claude Code session -- always-on visibility</li>
-                <li>Live port health checks across all registered project dashboards</li>
-                <li>Git status aggregation: dirty repos, uncommitted changes, branch states</li>
-                <li>REST API for other agents and tools to query project state</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>9</strong> modules</span>
-                <span class="metric"><strong>3.5K</strong> LOC</span>
-                <span class="metric"><strong>38+</strong> projects tracked</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">FastAPI</span>
-                <span class="tech-badge">Jinja2</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- ── FOCUSED TOOLS ─────────────────────────────── -->
-    <div class="tier-header">
-        <h3><span class="complexity-badge complexity-focused">Focused</span> Single-Purpose Tools</h3>
-        <div class="tier-line"></div>
-    </div>
-    <p class="tier-desc">Under 3K LOC, purpose-built for one job. Small footprint, high leverage -- each one solves a specific problem in the ecosystem pipeline.</p>
-
-    <div class="projects-grid">
-
-        <!-- PromptForge -->
-        <div class="project-card" data-category="ai">
-            <div class="card-top">
-                <h3><span class="abbrev">PromptForge</span> Prompt Enrichment Engine</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">Intelligent prompt gate that classifies tasks, injects expert personas, and scores context quality before execution.</p>
-            <ul class="capabilities">
-                <li>9-type task classification with persona injection for each domain</li>
-                <li>Context scoring (0-100%) with targeted questions for missing information</li>
-                <li>Session tracking that carries project context across prompts</li>
-                <li>Hooks into every Claude Code session via UserPromptSubmit</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>11</strong> modules</span>
-                <span class="metric"><strong>3.1K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Claude Code Hooks</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-        <!-- BuildGuard -->
-        <div class="project-card" data-category="infra">
-            <div class="card-top">
-                <h3><span class="abbrev">BuildGuard</span> Build Pipeline Orchestrator</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">7-step build pipeline that enforces contract-before-build, test gates, and delta reporting on every project change.</p>
-            <ul class="capabilities">
-                <li>CONTRACT_BEFORE_BUILD rule -- no code written without an approved spec</li>
-                <li>Hard test gates after every function -- build stops on failure</li>
-                <li>Delta reports tracking planned vs built vs tested at end of each session</li>
-                <li>CLI interface and PCC dashboard integration</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>13</strong> modules</span>
-                <span class="metric"><strong>2.7K</strong> LOC</span>
-                <span class="metric"><strong>7</strong> pipeline steps</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">YAML</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-        <!-- AIReceptionist -->
-        <div class="project-card" data-category="business">
-            <div class="card-top">
-                <h3><span class="abbrev">AIReceptionist</span> AI Phone Receptionist</h3>
-                <span class="status-badge status-beta">Beta</span>
-            </div>
-            <p class="tagline">AI-powered phone receptionist that handles calls, schedules appointments, and integrates with CRM systems.</p>
-            <ul class="capabilities">
-                <li>Twilio voice integration with real-time speech-to-text processing</li>
-                <li>Ollama-powered conversation engine with business-specific training</li>
-                <li>CRM integrations for Clio (law firms) and Buildium (property management)</li>
-                <li>Interactive demo mode at /demo for client demonstrations</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>19</strong> modules</span>
-                <span class="metric"><strong>2.5K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">FastAPI</span>
-                <span class="tech-badge">Twilio</span>
-                <span class="tech-badge">Ollama</span>
-            </div>
-        </div>
-
-        <!-- SpecForge -->
-        <div class="project-card" data-category="infra">
-            <div class="card-top">
-                <h3><span class="abbrev">SpecForge</span> Spec-to-Code Pipeline</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">5-phase spec-first build pipeline with SHA-256 spec locking and cross-project intelligence hub.</p>
-            <ul class="capabilities">
-                <li>Guided spec creation from natural language requirements</li>
-                <li>SHA-256 spec freeze that prevents scope creep during builds</li>
-                <li>Cross-project intelligence hub that reads all 38+ projects for synergies</li>
-                <li>Verification phase that diffs final code against locked spec</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>2</strong> modules</span>
-                <span class="metric"><strong>1.9K</strong> LOC</span>
-                <span class="metric"><strong>5</strong> phases</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">SHA-256</span>
-                <span class="tech-badge">JSON Schema</span>
-            </div>
-        </div>
-
-        <!-- FocusGuard -->
-        <div class="project-card" data-category="ai">
-            <div class="card-top">
-                <h3><span class="abbrev">FocusGuard</span> ADHD Focus Assistant</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Desktop focus guardian that detects distractions, blocks time-wasting sites, and nudges you back on task.</p>
-            <ul class="capabilities">
-                <li>Active window monitoring with distraction classification</li>
-                <li>Configurable block lists with scheduled focus/break cycles</li>
-                <li>Desktop GUI with session timers, streak tracking, and focus scoring</li>
-                <li>Integration with Claude Code ADHD hooks for cross-platform awareness</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>9</strong> modules</span>
-                <span class="metric"><strong>1.6K</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">CustomTkinter</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-        <!-- AIRadar -->
-        <div class="project-card" data-category="ai">
-            <div class="card-top">
-                <h3><span class="abbrev">AIRadar</span> AI Intelligence Engine</h3>
-                <span class="status-badge status-production">Production</span>
-            </div>
-            <p class="tagline">24-source intelligence scanner that finds AI industry opportunities before everyone else.</p>
-            <ul class="capabilities">
-                <li>Automated 30-minute scan cycle across 24 curated intelligence sources</li>
-                <li>Local LLM-powered analysis that generates derivative insights from raw data</li>
-                <li>Cross-project relevance scoring -- flags intel that matters to your active work</li>
-                <li>Live dashboard with filtering, trend detection, and priority-ranked findings</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>4</strong> modules</span>
-                <span class="metric"><strong>1.1K</strong> LOC</span>
-                <span class="metric"><strong>24</strong> sources</span>
-                <span class="metric"><strong>30-min</strong> scan cycle</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">FastAPI</span>
-                <span class="tech-badge">Ollama</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-            <a href="https://TiranMosko-ai-radar.hf.space" target="_blank" rel="noopener" class="demo-link">Live Demo</a>
-        </div>
-
-        <!-- AgentForge -->
-        <div class="project-card" data-category="infra">
-            <div class="card-top">
-                <h3><span class="abbrev">AgentForge</span> Docker Agent Ecosystem</h3>
-                <span class="status-badge status-active">Active</span>
-            </div>
-            <p class="tagline">Docker-based agent ecosystem with OpenHands, n8n, LiteLLM, and ShieldWall MCP bridge -- all free-tier.</p>
-            <ul class="capabilities">
-                <li>OpenHands autonomous coding agent with NullClaw companion</li>
-                <li>n8n workflow automation for cross-service orchestration</li>
-                <li>LiteLLM proxy for unified API access across model providers</li>
-                <li>ShieldWall MCP bridge that extends Claude tools to containerized agents</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>4</strong> modules</span>
-                <span class="metric"><strong>831</strong> LOC</span>
-                <span class="metric"><strong>5</strong> containers</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Docker Compose</span>
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Flask</span>
-                <span class="tech-badge">MCP Protocol</span>
-            </div>
-        </div>
-
-        <!-- MailFinance -->
-        <div class="project-card" data-category="business">
-            <div class="card-top">
-                <h3><span class="abbrev">MailFinance</span> Gmail Finance Analyzer</h3>
-                <span class="status-badge status-beta">Beta</span>
-            </div>
-            <p class="tagline">AI that reads your Gmail and auto-categorizes every dollar you spend.</p>
-            <ul class="capabilities">
-                <li>Secure Gmail API integration with OAuth2 authentication</li>
-                <li>Automatic transaction extraction from receipts, invoices, and bank notifications</li>
-                <li>AI-powered expense categorization with merchant recognition</li>
-                <li>Spending analytics dashboard with trends and anomaly detection</li>
-            </ul>
-            <div class="card-metrics">
-                <span class="metric"><strong>9</strong> modules</span>
-                <span class="metric"><strong>258</strong> LOC</span>
-            </div>
-            <div class="tech-stack">
-                <span class="tech-badge">Python</span>
-                <span class="tech-badge">Gmail API</span>
-                <span class="tech-badge">Flask</span>
-                <span class="tech-badge">SQLite</span>
-            </div>
-        </div>
-
-    </div>
+  </div>
 </section>
 
-<div class="section-divider"></div>
+<divider></divider>
 
-<!-- ── Architecture Map ──────────────────────────────────── -->
-<section id="architecture">
-    <div class="section-header">
-        <h2>Architecture Map</h2>
-        <p>Interactive visualization of how all 38+ projects, hooks, MCP servers, and databases connect. Click nodes to highlight connections. Drag to rearrange. Scroll to zoom.</p>
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-inner">
+      <div class="about-logo">
+        <svg width="200" height="200" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="ab" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1030a0"/><stop offset="100%" stop-color="#1840c8"/></linearGradient>
+            <linearGradient id="ak" x1="0.1" y1="0.95" x2="0.9" y2="0.05"><stop offset="0%" stop-color="#2550d8"/><stop offset="100%" stop-color="#a030f0"/></linearGradient>
+            <linearGradient id="af" x1="0.1" y1="0.95" x2="0.9" y2="0.05"><stop offset="0%" stop-color="#1848e0"/><stop offset="100%" stop-color="#3068f8"/></linearGradient>
+            <linearGradient id="al" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0%" stop-color="#0e2090"/><stop offset="100%" stop-color="#1838c0"/></linearGradient>
+            <filter id="aglow"><feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <ellipse cx="50" cy="48" rx="38" ry="36" fill="rgba(60,40,200,0.12)" filter="url(#aglow)"/>
+          <path d="M17 5 C22 4 29 5 31 9 C32 22 32 36 32 46 C32 57 31 72 29 88 C24 92 17 90 17 87 Z" fill="url(#ab)"/>
+          <path d="M31 36 C46 26 63 14 81 3 C83 1 86 3 84 8 C66 17 48 30 33 44 Z" fill="url(#ak)"/>
+          <path d="M31 40 C45 32 58 22 73 11 C75 9 78 11 76 15 C61 25 47 36 32 48 Z" fill="url(#af)"/>
+          <path d="M31 44 Q53 30 74 13" stroke="rgba(200,225,255,0.75)" stroke-width="1" fill="none" stroke-linecap="round"/>
+          <path d="M31 50 C43 53 62 64 79 84 C81 86 79 89 76 87 C57 69 39 58 29 53 Z" fill="url(#al)"/>
+        </svg>
+      </div>
+      <div class="about-text">
+        <div class="label">Founder</div>
+        <h2>Built by Tiran Moskovitch</h2>
+        <p>Product Support Engineer at Panasonic Avionics by day — AI systems builder by everything else. I've been engineering autonomous systems, trading engines, and AI infrastructure for years.</p>
+        <p>Kinetra Labs is where that work lives. Every tool, every agent, every system is production-grade and actually runs — no demos, no placeholders.</p>
+        <div class="about-pills">
+          <span class="pill">AI Automation</span>
+          <span class="pill">Algorithmic Trading</span>
+          <span class="pill">MCP Development</span>
+          <span class="pill">Agent Systems</span>
+          <span class="pill">FastAPI / Python</span>
+          <span class="pill">Claude Code</span>
+          <span class="pill">CUDA / RTX</span>
+          <span class="pill">Security Engineering</span>
+        </div>
+      </div>
     </div>
-    <div style="position:relative;background:#161b22;border:1px solid #30363d;border-radius:16px;overflow:hidden;height:700px">
-        <iframe src="architecture.html" style="width:100%;height:100%;border:none;border-radius:16px" loading="lazy"></iframe>
-    </div>
+  </div>
 </section>
 
-<div class="section-divider"></div>
+<!-- CTA -->
+<div class="cta-band">
+  <h2>Ready to <span>automate the work</span> that slows you down?</h2>
+  <p>Let&rsquo;s build something that actually moves.</p>
+  <a href="mailto:tiran.moskovitch@gmail.com" class="btn-primary" style="font-size:15px;padding:14px 32px">tiran.moskovitch@gmail.com</a>
+</div>
 
-<!-- ── The AI-OS ────────────────────────────────────────── -->
-<section id="aios">
-    <div class="aios-section">
-        <h2><span class="gradient">The AI-OS</span></h2>
-        <p class="aios-description">
-            All of these projects are not isolated tools -- they form a unified operating system. 38+ active projects connected through the MCP protocol, governed by a multi-layer security firewall, automated by 16 autonomous agents, and monitored by an AI intelligence engine. Every project can communicate with every other project, and the entire system is self-healing with watchdog processes and auto-recovery.
-        </p>
-        <div class="aios-stats">
-            <div class="aios-stat">
-                <div class="aios-stat-value">38+</div>
-                <div class="aios-stat-label">Active Projects</div>
-            </div>
-            <div class="aios-stat">
-                <div class="aios-stat-value">57</div>
-                <div class="aios-stat-label">MCP Servers</div>
-            </div>
-            <div class="aios-stat">
-                <div class="aios-stat-value">16</div>
-                <div class="aios-stat-label">Custom Agents</div>
-            </div>
-            <div class="aios-stat">
-                <div class="aios-stat-value">30</div>
-                <div class="aios-stat-label">Security Hooks</div>
-            </div>
-            <div class="aios-stat">
-                <div class="aios-stat-value">37</div>
-                <div class="aios-stat-label">Slash Commands</div>
-            </div>
-            <div class="aios-stat">
-                <div class="aios-stat-value">180K+</div>
-                <div class="aios-stat-label">Lines of Code</div>
-            </div>
-        </div>
-
-        <div class="complexity-breakdown">
-            <h3>Complexity Breakdown</h3>
-            <table class="complexity-table">
-                <thead>
-                    <tr>
-                        <th>Tier</th>
-                        <th>Count</th>
-                        <th>Criteria</th>
-                        <th>Examples</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="complexity-badge complexity-high">High</span></td>
-                        <td>4 projects</td>
-                        <td>10K+ LOC, multi-layer arch, GPU/multi-tenant</td>
-                        <td>QSDE (47K LOC, CUDA), RSSC (33K LOC, 10 workers), BusinessOS (12K LOC, multi-tenant), DevGuard (10K LOC, React+API)</td>
-                    </tr>
-                    <tr>
-                        <td><span class="complexity-badge complexity-medium">Medium</span></td>
-                        <td>13 projects</td>
-                        <td>3K-10K LOC, multiple subsystems</td>
-                        <td>CodeShield (7.8K, AST diffing), MechAgent (8.2K, CAD engine), ShieldWall (6K, 3 defense layers), Overseer (4.6K, 10 sensors + 8 healers)</td>
-                    </tr>
-                    <tr>
-                        <td><span class="complexity-badge complexity-focused">Focused</span></td>
-                        <td>8 projects</td>
-                        <td>Under 3K LOC, single-purpose</td>
-                        <td>PromptForge (3.1K, prompt gate), SpecForge (1.9K, spec pipeline), AIRadar (1.1K, intel scanner), AgentForge (831, Docker orchestration)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- ── Public Products ─────────────────────────────────── -->
-<section id="products">
-    <div class="section-header">
-        <h2>Public Products</h2>
-        <p>Open source tools and premium products. Free demos on Hugging Face, source code on GitHub.</p>
-    </div>
-
-    <div class="products-grid">
-
-        <div class="product-card">
-            <h3>ScrapeKit</h3>
-            <p class="product-desc">Intelligent web scraping toolkit with anti-detection, proxy rotation, and structured data extraction.</p>
-            <div class="product-buttons">
-                <a href="https://github.com/tiranmoskovitch-dev/scrapekit" target="_blank" rel="noopener" class="btn">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <h3>SEO Audit Tool</h3>
-            <p class="product-desc">Comprehensive SEO analyzer that audits page speed, meta tags, accessibility, and generates fix-it reports.</p>
-            <div class="product-buttons">
-                <a href="https://github.com/tiranmoskovitch-dev/seo-audit-tool" target="_blank" rel="noopener" class="btn">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                    GitHub
-                </a>
-                <a href="https://TiranMosko-seo-audit.hf.space" target="_blank" rel="noopener" class="btn btn-primary">Try Free</a>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <h3>Content Forge</h3>
-            <p class="product-desc">AI content generation engine that produces blog posts, social media copy, and marketing content at scale.</p>
-            <div class="product-buttons">
-                <a href="https://github.com/tiranmoskovitch-dev/content-forge" target="_blank" rel="noopener" class="btn">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <h3>Resume Craft</h3>
-            <p class="product-desc">AI resume builder that tailors your resume per job description with ATS optimization and scoring.</p>
-            <div class="product-buttons">
-                <a href="https://github.com/tiranmoskovitch-dev/resume-craft" target="_blank" rel="noopener" class="btn">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <h3>Claude Sandbox Guard</h3>
-            <p class="product-desc">Shell hook system that intercepts dangerous commands before Claude Code can execute them. Protects your OS from AI mistakes.</p>
-            <div class="product-buttons">
-                <a href="https://github.com/tiranmoskovitch-dev/claude-sandbox-guard" target="_blank" rel="noopener" class="btn">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <h3>MCP Tools Collection</h3>
-            <p class="product-desc">50+ production-ready MCP servers for Claude Code. Database connectors, API bridges, browser automation, and more.</p>
-            <div class="product-buttons">
-                <a href="https://github.com/tiranmoskovitch-dev/MCP-Tools" target="_blank" rel="noopener" class="btn">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <h3>DevGuard</h3>
-            <p class="product-desc">AI development governance platform. Scans code for security, quality, and compliance issues with a React dashboard.</p>
-            <div class="product-buttons">
-                <a href="https://github.com/tiranmoskovitch-dev/DevGuard" target="_blank" rel="noopener" class="btn">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <h3>MCP API Bridge Lite</h3>
-            <p class="product-desc">Free REST API to MCP bridge. Expose any REST API as an MCP server for Claude Code with zero configuration.</p>
-            <div class="product-buttons">
-                <a href="https://github.com/tiranmoskovitch-dev/mcp-api-bridge-lite" target="_blank" rel="noopener" class="btn">
-                    <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- ── Footer ──────────────────────────────────────────── -->
+<!-- FOOTER -->
 <footer>
-    <div class="footer-left">
-        Tiran Moskovitch &middot; 2026
-    </div>
-    <div class="footer-links">
-        <a href="https://github.com/tiranmoskovitch-dev" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://huggingface.co/TiranMosko" target="_blank" rel="noopener">Demos</a>
-        <a href="#products">Products</a>
-    </div>
+  <span class="footer-logo">KINETRA LABS AI</span>
+  <span>Built by Tiran Moskovitch &mdash; 2026</span>
+  <span><a href="https://github.com/tiranmoskovitch-dev" style="color:var(--muted);transition:color .2s" onmouseover="this.style.color='#cce4ff'" onmouseout="this.style.color=''">GitHub</a></span>
 </footer>
-
-<!-- ── Scroll Animations ───────────────────────────────── -->
-<script>
-    // Intersection Observer for scroll-triggered animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    // Observe all cards and sections
-    document.querySelectorAll('.project-card, .product-card, .aios-section, .tier-header').forEach((el, i) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = `opacity 0.5s ease ${i * 0.04}s, transform 0.5s ease ${i * 0.04}s`;
-        observer.observe(el);
-    });
-
-    // Smooth scroll for nav links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', (e) => {
-            e.preventDefault();
-            const target = document.querySelector(anchor.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-    });
-
-    // Navbar background opacity on scroll
-    const nav = document.querySelector('nav');
-    let lastScroll = 0;
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        if (scrollY > 100) {
-            nav.style.background = 'rgba(13, 17, 23, 0.95)';
-        } else {
-            nav.style.background = 'rgba(13, 17, 23, 0.85)';
-        }
-        lastScroll = scrollY;
-    }, { passive: true });
-</script>
 
 </body>
 </html>
