@@ -568,6 +568,7 @@ footer{border-top:1px solid var(--border);padding:40px 72px;display:flex;justify
   <div class="footer-copy">© 2026 Kinetra AI · Custom automation built to last · <span id="cookie-manage" style="cursor:pointer;text-decoration:underline" onclick="resetCookieConsent()">Cookie settings</span></div>
 </footer>
 
+<script src="config.js"></script>
 <script>
 // ── SAAS DATABASE ──────────────────────────────────────────
 const BIZ_TYPES = [
@@ -1044,14 +1045,7 @@ function shorten(name) {
   return name.replace(/\(.*?\)/g,'').replace(/\/.*$/,'').trim().split(' ').slice(0,3).join(' ');
 }
 
-// ── AVAILABILITY / SCHEDULER ─────────────────────────────
-const SLOTS = [
-  { day:'Mon', times:['9:00 AM','11:00 AM','2:00 PM'] },
-  { day:'Tue', times:['10:00 AM','1:00 PM','3:00 PM'] },
-  { day:'Wed', times:['9:00 AM','12:00 PM'] },
-  { day:'Thu', times:['11:00 AM','2:00 PM','4:00 PM'] },
-  { day:'Fri', times:['9:00 AM','10:00 AM'] },
-];
+// ── AVAILABILITY / SCHEDULER — edit in config.js ─────────
 
 function renderAvailability() {
   document.getElementById('avail-grid').innerHTML = SLOTS.map(s=>`
